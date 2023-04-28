@@ -1,4 +1,6 @@
 const { Schema, model } = require("mongoose");
+
+// import schema from Category.js
 const categorySchema = require("./Category");
 
 const expenseSchema = new Schema({
