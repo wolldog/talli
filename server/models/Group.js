@@ -20,6 +20,6 @@ members:{
 //   return this.members.length;
 // });
 
-const User = model("Group", userSchema);
+const Group = model("Group", groupSchema);
 
 module.exports = Group;
