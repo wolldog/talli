@@ -27,7 +27,7 @@ const groupSchema = require("./Group");
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -60,6 +60,7 @@ const userSchema = new Schema(
     group: [groupSchema],
 
     friends: {
+      // username or user_id
       type: String,
     },
   },
@@ -86,11 +87,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-// update to friend count
-// // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
-// userSchema.virtual("bookCount").get(function () {
-//   return this.savedBooks.length;
-// });
+
 
 const User = model("User", userSchema);
 
