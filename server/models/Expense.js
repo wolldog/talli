@@ -12,12 +12,16 @@ const expenseSchema = new Schema({
     type: String,
     max_length: 100,
   },
-  category: {
-    type: String,
-    value: [food, acomodation, transport, enterteiment, other],
-  },
+  // category: {
+  //   type: String,
+  //   enum: ["food", "transport", "acomodation", "enterteiment", "other"],
+  // },
   amount: {
     type: Float,
+  },
+  payer: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
