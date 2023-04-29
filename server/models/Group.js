@@ -17,10 +17,7 @@ const groupSchema = new Schema(
       },
     ],
     // array that will holds all the expenses
-    expenses: [expenseSchema],
-    balance: {
-      type: Number,
-    },
+    events: [eventSchema],
   },
   // set this to use virtual below
   {

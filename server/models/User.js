@@ -54,13 +54,6 @@ const userSchema = new Schema(
     //   // pendent to find how to upload a picture/avatar to DB
     //   type: String,
     // },
-    groups: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Group",
-      },
-    ],
-
     friends: [
       {
         type: Schema.Types.ObjectId,
@@ -92,8 +85,8 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
-userSchema.virtual("groupCount").get(function () {
-  return this.groups.length;
+userSchema.virtual("friendsCount").get(function () {
+  return this.friends.length;
 }); 
 
 const User = model("User", userSchema);
