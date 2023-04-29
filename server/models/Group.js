@@ -10,9 +10,9 @@ const groupSchema = new Schema({
     // username or user_id
     type: String,
   },
-  balance: {
-    type: Float,
-  },
+//   balance: {
+//     type: Float,
+//   },
 });
 
 // update to member count
