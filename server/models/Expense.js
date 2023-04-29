@@ -13,7 +13,11 @@ const expenseSchema = new Schema({
     max_length: 100,
   },
   category: {
-    type: [categorySchema],
+    type: String,
+    value: [food, acomodation, transport, enterteiment, other],
+  },
+  amount: {
+    type: Float,
   },
 });
 

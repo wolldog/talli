@@ -1,18 +1,19 @@
 const { Schema, model } = require("mongoose");
 
-const groupSchema = new Schema(
-    {
-groupname:{
+const groupSchema = new Schema({
+  groupname: {
     type: String,
     require: true,
     unique: true,
-},
-members:{
+  },
+  members: {
     // username or user_id
-    type:String,
-}
-}
-);
+    type: String,
+  },
+  balance: {
+    type: Float,
+  },
+});
 
 // update to member count
 // // when we query a group, we'll also get another field called `groupCount` with the number of users that joined the group
