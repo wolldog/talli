@@ -10,7 +10,7 @@ const PageHeader = () => {
       <Image src={ headerImage} style={{maxHeight:"75px"}}></Image>
       <Space>
         <Badge className="notification" count={5}>
-        <BellFilled style={{ fontSize: 20, justifySelf: "center" }} />
+        <BellFilled style={{ fontSize: 20 }} />
         </Badge>
       </Space>
     </div>
