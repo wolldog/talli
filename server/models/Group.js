@@ -1,7 +1,30 @@
 const { Schema, model } = require("mongoose");
 
-// import schema from Expense.js
-const expenseSchema = require("./Expense");
+const expenseSchema = new Schema({
+  expensename: {
+    type: String,
+    require: true,
+  },
+  description: {
+    type: String,
+    max_length: 100,
+  },
+  // category: {
+  //   type: String,
+  //   enum: ["food", "transport", "acomodation", "enterteiment", "other"],
+  // },
+  amount: {
+    type: Number,
+  },
+  payer: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
+});
 
 const groupSchema = new Schema(
   {
@@ -16,8 +39,10 @@ const groupSchema = new Schema(
         ref: "User",
       },
     ],
-    // array that will holds all the expenses
-    events: [eventSchema],
+    balance: {
+      type: Number,
+    },
+    expenses: [expenseSchema],
   },
   // set this to use virtual below
   {
@@ -34,4 +59,4 @@ groupSchema.virtual("membersCount").get(function () {
 
 const Group = model("Group", groupSchema);
 
-module.exports = Group;
+module.exports = groupSchema;
