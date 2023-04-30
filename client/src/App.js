@@ -8,7 +8,12 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import { Space} from "antd";
+
 import PageHeader from "./components/PageHeader";
+import SideMenu from "./components/SideMenu";
+import PageConent from "./components/PageContent";
+
 
 
 // Construct our main GraphQL API endpoint
@@ -39,9 +44,11 @@ function App() {
   return (
     <div className="App">
     <ApolloProvider client={client}>
-      <Router>
-        <PageHeader />
-      </Router>
+     <PageHeader />
+      <Space>
+        <SideMenu></SideMenu>
+        <PageConent></PageConent>
+      </Space>
     </ApolloProvider>
     </div>
   );
