@@ -4,7 +4,7 @@ import { Typography } from "antd";
 const Join = () => {
   return (
     <div className="join">
-      <Typography.Text>Join</Typography.Text>
+      <Typography.Text>You will only see this if you are not logged in.</Typography.Text>
     </div>
   );
 };

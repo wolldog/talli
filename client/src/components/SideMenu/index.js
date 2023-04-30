@@ -17,14 +17,15 @@ const SideMenu = () => {
           navigate(item.key);
         }}
         items={[
+          { label: "Home", icon: <ClockCircleOutlined />, key: "/" },
           {
             label: "Dashboard",
             icon: <DashboardOutlined />,
             key: "/dashboard",
           },
-          { label: "Login", icon: <TeamOutlined />, key: "/login" },
-          { label: "Join", icon: <UserOutlined />, key: "/join" },
-          { label: "Home", icon: <ClockCircleOutlined />, key: "/" },
+          { label: "Groups", icon: <TeamOutlined />, key: "/groups" },
+          { label: "Friends", icon: <UserOutlined />, key: "/friends" },
+          
         ]}
       ></Menu>
     </div>
