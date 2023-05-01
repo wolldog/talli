@@ -45,7 +45,7 @@ function App() {
     <div className="App">
     <ApolloProvider client={client}>
      <PageHeader />
-      <Space>
+      <Space className="main">
         <SideMenu></SideMenu>
         <PageConent></PageConent>
       </Space>
