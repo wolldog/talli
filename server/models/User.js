@@ -24,7 +24,7 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
   {
-    username: {
+    nickname: {
       type: String,
       required: true,
       unique: true,
