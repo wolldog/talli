@@ -1,17 +1,45 @@
-import React from "react";
+import { useState } from "react";
 import { Typography } from "antd";
 import { Button, Checkbox, Form, Input } from "antd";
 import Auth from "../../utils/auth.js";
-
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../../utils/mutations.js";
 
 const Login = () => {
+  const [formState, setFormState] = useState({ email: "", password: "" });
+
+  const [login, { error, data }] = useMutation(LOGIN_USER);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // submit form
+  const onFinish = async (event) => {
+    // event.preventDefault();
+    console.log(formState);
+    try {
+      const { data } = await login({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.loginUser.token);
+    } catch (e) {
+      console.error(e);
+    }
+
+    // clear form values
+    setFormState({
+      email: "",
+      password: "",
+    });
+  };
+
   return (
     <div>
       <Typography.Title>Login</Typography.Title>
@@ -26,24 +54,28 @@ const Login = () => {
         style={{
           maxWidth: 600,
         }}
-        initialValues={{
-          remember: true,
-        }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
-          name="username"
+          label="Email"
+          name="email"
           rules={[
             {
               required: true,
-              message: "Please input your username!",
+              message: "Please input your email!",
             },
           ]}
         >
-          <Input />
+          <Input
+            className="form-input"
+            placeholder="Your email"
+            name="email"
+            type="email"
+            value={formState.email}
+            onChange={handleChange}
+          />
         </Form.Item>
 
         <Form.Item
@@ -56,19 +88,15 @@ const Login = () => {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password
+            className="form-input"
+            placeholder="******"
+            name="password"
+            type="password"
+            value={formState.password}
+            onChange={handleChange}
+          />
         </Form.Item>
-
-        {/* <Form.Item
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{
-        offset: 8,
-        span: 16,
-      }}
-    >
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item> */}
 
         <Form.Item
           wrapperCol={{
@@ -76,7 +104,7 @@ const Login = () => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="default" htmlType="submit">
             Login
           </Button>
         </Form.Item>
