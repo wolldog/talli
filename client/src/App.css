@@ -14,3 +14,10 @@
   justify-content: space-around;
 }
 
+.PageContent {
+  padding: 10px;
+}
+
+.SideMenu {
+  padding: 10px
+}
