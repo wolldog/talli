@@ -1,5 +1,5 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User } = require("../models");
+const { User, Group } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -8,6 +8,14 @@ const resolvers = {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
       return User.findOne({ _id: context.user._id });
+    },
+
+    users: async (parent, args, context) => {
+      return User.find({});
+    },
+
+    group: async (parent, args, context) => {
+      return Group.find({});
     },
   },
   Mutation: {
@@ -26,23 +34,17 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    // saveBook: async (parent, { book }, context) => {
-    //   if (!context.user) throw new AuthenticationError("please log in");
-    //   return await User.findOneAndUpdate(
-    //     { _id: context.user._id },
-    //     { $addToSet: { savedBooks: book } },
-    //     { new: true, runValidators: true }
-    //   );
-    // },
-
-    // removeBook: async (parent, { bookId }, context) => {
-    //   if (!context.user)
-    //     throw new AuthenticationError("you need to be logged in");
-    //   return await User.findOneAndUpdate(
-    //     { _id: context.user._id },
-    //     { $pull: { savedBooks: { bookId: bookId } } },
-    //     { new: true }
-    //   );
+    addGroup: async (parent, { groupname, members, balance, expenses }) => {
+      const user = await Group.create({
+        groupname,
+        members,
+        balance,
+        expenses,
+      });
+      const token = signToken(user);
+      return { token, Group };
+    },
+    // removeGroup: async (parent, { groupId }, context) => {
     // },
   },
 };
