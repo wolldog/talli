@@ -1,9 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
-// import schema from Group.js
-const groupSchema = require("./Group");
-
 // found this to validate phone number, check if works (second option).
 // const yourSchema = new mongoose.Schema({
 //     phoneNr: {
@@ -52,17 +49,17 @@ const userSchema = new Schema(
         "Please enter a valid phone number",
       ],
     },
-    // pendent to find how to upload a picture/avatar to DB
-    avatar: {
-      type: String,
-    },
-    // set group to be an array of data that adheres to the groupSchema
-    group: [groupSchema],
 
-    friends: {
-      // username or user_id
-      type: String,
-    },
+    // avatar: {
+    //   // pendent to find how to upload a picture/avatar to DB
+    //   type: String,
+    // },
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   // set this to use virtual below
   {
@@ -87,7 +84,10 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-
+// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
+userSchema.virtual("friendsCount").get(function () {
+  return this.friends.length;
+}); 
 
 const User = model("User", userSchema);
 
