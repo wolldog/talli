@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Typography } from "antd";
+import { ADD_USER } from "../../utils/mutations.js";
+import { useMutation } from "@apollo/client";
 import Agreement from "../../assets/docs/ServiceAgreement(draft).pdf"
 import { PlusOutlined } from "@ant-design/icons";
+import Auth from '../../utils/auth.js';
 import {
   Button,
   Checkbox,
@@ -13,11 +16,42 @@ import {
 
 const { Option } = Select;
 const Join = () => {
+
+  const [formState, setFormState] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+  const [addUser, { error, data }] = useMutation(ADD_USER);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const onFinish = async (event) => {
+    // event.preventDefault();
+    console.log(formState);
+
+    try {
+      const { data } = await addUser({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.addUser.token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
+  // const onFinish = (values) => {
+  //   console.log("Received values of form: ", values);
+  // };
   
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
@@ -100,7 +134,12 @@ const Join = () => {
             },
           ]}
         >
-          <Input />
+          <Input className="form-input"
+                  placeholder="Your email"
+                  name="email"
+                  type="text"
+                  value={formState.email}
+                  onChange={handleChange}/>
         </Form.Item>
 
         <Form.Item
@@ -114,10 +153,15 @@ const Join = () => {
           ]}
           hasFeedback
         >
-          <Input.Password />
+          <Input.Password className="form-input"
+                  placeholder="password"
+                  name="password"
+                  type="text"
+                  value={formState.email}
+                  onChange={handleChange} />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="confirm"
           label="Confirm Password"
           dependencies={["password"]}
@@ -139,8 +183,8 @@ const Join = () => {
             }),
           ]}
         >
-          <Input.Password />
-        </Form.Item>
+          <Input.Password /> */}
+        {/* </Form.Item> */}
 
         <Form.Item
           name="nickname"
@@ -154,7 +198,12 @@ const Join = () => {
             },
           ]}
         >
-          <Input />
+          <Input className="form-input"
+                  placeholder="Enter your the name your friends use"
+                  name="nickname"
+                  type="text"
+                  value={formState.nickname}
+                  onChange={handleChange}/>
         </Form.Item>
         <Form.Item
           name="phone"
@@ -171,6 +220,12 @@ const Join = () => {
             style={{
               width: "100%",
             }}
+            className="form-input"
+                  placeholder="Enter you phone number"
+                  name="phone"
+                  type="text"
+                  value={formState.phone}
+                  onChange={handleChange}
           />
         </Form.Item>
         <Form.Item
