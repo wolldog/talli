@@ -24,6 +24,9 @@ const expenseSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  attachment: {
+    type: String,
+  },
 });
 
 const groupSchema = new Schema(
@@ -43,9 +46,6 @@ const groupSchema = new Schema(
         ref: "User",
       },
     ],
-    balance: {
-      type: Number,
-    },
     expenses: [expenseSchema],
   },
   // set this to use virtual below
