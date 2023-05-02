@@ -10,11 +10,14 @@ const resolvers = {
       return User.findOne({ _id: context.user._id });
     },
 
-    users: async (parent, args, context) => {
+    users: async () => {
       return User.find({});
     },
+    user: async (parent, { nickname }) => {
+      return User.find({ nickname }).populate("friends");
+    },
 
-    groups: async (parent, args, context) => {
+    groups: async () => {
       return Group.find({});
     },
   },
@@ -41,11 +44,14 @@ const resolvers = {
         balance,
         expenses,
       });
-      // const token = signToken(user);
       return { group };
     },
-    // removeGroup: async (parent, { groupId }, context) => {
-    // },
+    removeGroup: async (parent, { groupId }, context) => {
+      const group = await Group.findByIdAndDelete({
+        _id: groupId,
+      });
+      return group;
+    },
   },
 };
 

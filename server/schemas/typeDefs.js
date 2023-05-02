@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
-    _id: ID!
+    _id: ID
     nickname: String
     email: String
     phone: String
@@ -26,9 +26,15 @@ const typeDefs = gql`
     date: String
   }
 
+  type Auth {
+    token: ID!
+    user: User
+  }
+
   type Query {
     me: User
     users: [User]
+    user(nickname: String): User
     groups: [Group]
   }
 
@@ -47,11 +53,6 @@ const typeDefs = gql`
       expenses: [String]
     ): Group
     removeGroup(groupId: ID!): Group
-  }
-
-  type Auth {
-    token: ID!
-    user: User
   }
 `;
 
