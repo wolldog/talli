@@ -14,9 +14,10 @@ const resolvers = {
       return User.find({});
     },
 
-    group: async (parent, args, context) => {
+    groups: async (parent, args, context) => {
       return Group.find({});
     },
+    nicknames: async(parent )
   },
   Mutation: {
     addUser: async (parent, { nickname, email, password, phone }) => {
@@ -35,14 +36,14 @@ const resolvers = {
       return { token, user };
     },
     addGroup: async (parent, { groupname, members, balance, expenses }) => {
-      const user = await Group.create({
+      const group = await Group.create({
         groupname,
         members,
         balance,
         expenses,
       });
-      const token = signToken(user);
-      return { token, Group };
+      // const token = signToken(user);
+      return { group };
     },
     // removeGroup: async (parent, { groupId }, context) => {
     // },
