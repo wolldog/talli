@@ -17,7 +17,6 @@ const resolvers = {
     groups: async (parent, args, context) => {
       return Group.find({});
     },
-    nicknames: async(parent )
   },
   Mutation: {
     addUser: async (parent, { nickname, email, password, phone }) => {

@@ -30,7 +30,6 @@ const typeDefs = gql`
     me: User
     users: [User]
     groups: [Group]
-    nicknames:[User]
   }
 
   type Mutation {
