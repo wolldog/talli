@@ -28,6 +28,10 @@ const expenseSchema = new Schema({
 
 const groupSchema = new Schema(
   {
+    admin: {
+      type: String,
+      require: true,
+    },
     groupname: {
       type: String,
       require: true,

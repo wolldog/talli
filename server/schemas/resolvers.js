@@ -11,14 +11,17 @@ const resolvers = {
     },
 
     users: async () => {
-      return User.find({});
+      return User.find({}).select("-__v").populate("friends");
     },
     user: async (parent, { nickname }) => {
-      return User.find({ nickname }).populate("friends");
+      return User.find({ nickname }).select("-__v").populate("friends");
     },
 
     groups: async () => {
-      return Group.find({});
+      return Group.find();
+    },
+    group: async (parent, { groupId, groupname }) => {
+      return Group.findOne({ _id: groupId, groupname: groupname });
     },
   },
   Mutation: {
@@ -37,15 +40,36 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addGroup: async (parent, { groupname, members, balance, expenses }) => {
+    addFriends: async (parent, { userId }, context) => {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: "64504e6ed7222bd3c786431b" },
+        { $addToSet: { friends: "645070736f418277e3d80f96" } },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
+    },
+
+    addGroup: async (parent, { groupname, admin }, context) => {
       const group = await Group.create({
         groupname,
-        members,
-        balance,
-        expenses,
+        admin: "64504e6ed7222bd3c786431b",
       });
-      return { group };
+      return group;
     },
+
+    addMembers: async (parent, { groupId, adminId }, context) => {
+      const updatedGroup = await Group.findOneAndUpdate(
+        { _id: "groupId" },
+        { $addToSet: { members: "userId" } },
+        { new: true, runValidators: true }
+      );
+      return updatedGroup;
+    },
+    // addMembers: async (parent,{userId, groupId}) => {
+    //   const member = await Group.findOneAndUpdate({
+
+    //   })
+    // },
     removeGroup: async (parent, { groupId }, context) => {
       const group = await Group.findByIdAndDelete({
         _id: groupId,

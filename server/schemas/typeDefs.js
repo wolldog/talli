@@ -6,15 +6,22 @@ const typeDefs = gql`
     nickname: String
     email: String
     phone: String
-    friends: [User]
+    friends: [Friend]
+  }
+  type Friend {
+    _id: ID
   }
 
   type Group {
     _id: ID!
+    admin: ID!
     groupname: String
-    members: [User]
+    members: [Member]
     balance: Float
     expenses: [Expense]
+  }
+  type Member {
+    _id: ID
   }
 
   type Expense {
@@ -36,6 +43,7 @@ const typeDefs = gql`
     users: [User]
     user(nickname: String): User
     groups: [Group]
+    group(groupId: ID!, groupname: String): Group
   }
 
   type Mutation {
@@ -46,12 +54,9 @@ const typeDefs = gql`
       password: String
       phone: String
     ): Auth
-    addGroup(
-      groupname: String
-      members: [String]
-      balance: Float
-      expenses: [String]
-    ): Group
+    addFriends(userId: ID): User
+    addGroup(groupname: String, admin: ID): Group
+    addMembers(userId: ID): Group
     removeGroup(groupId: ID!): Group
   }
 `;
