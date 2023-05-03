@@ -66,7 +66,7 @@ const typeDefs = gql`
       payer: String
       date: String
       attachment: String
-    ): Group
+    ): Expense
     removeGroup(groupId: ID!): Group
   }
 `;

@@ -18,10 +18,12 @@ const resolvers = {
     },
 
     groups: async () => {
-      return Group.find();
+      return Group.find().select("-__v").populate("expenses", "members");
     },
     group: async (parent, { groupId, groupname }) => {
-      return Group.findOne({ _id: groupId, groupname: groupname });
+      return Group.findOne({ _id: groupId, groupname: groupname })
+        .select("-__v")
+        .populate("expenses", "members");
     },
   },
   Mutation: {
@@ -40,6 +42,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+
     addFriends: async (parent, { userId }, context) => {
       const updatedUser = await User.findOneAndUpdate(
         { _id: "64504e6ed7222bd3c786431b" },
@@ -65,11 +68,20 @@ const resolvers = {
       );
       return updatedGroup;
     },
-    // addMembers: async (parent,{userId, groupId}) => {
-    //   const member = await Group.findOneAndUpdate({
 
-    //   })
-    // },
+    addExpenses: async (
+      parent,
+      { groupId, description, amount, payer, date, attachment }
+    ) => {
+      const addExpenseUpdated = await Group.findOneAndUpdate(
+        { _id: "groupId" },
+        {
+          $addToSet: { expenses: description, amount, payer, date, attachment },
+        },
+        { new: true, runValidators: true }
+      );
+    },
+
     removeGroup: async (parent, { groupId }, context) => {
       const group = await Group.findByIdAndDelete({
         _id: groupId,
