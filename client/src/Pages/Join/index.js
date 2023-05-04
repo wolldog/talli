@@ -15,6 +15,7 @@ import {
 } from "antd";
 
 const { Option } = Select;
+
 const Join = () => {
 
   const [formState, setFormState] = useState({
@@ -160,31 +161,6 @@ const Join = () => {
                   value={formState.email}
                   onChange={handleChange} />
         </Form.Item>
-
-        {/* <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error("The two passwords that you entered do not match!")
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password /> */}
-        {/* </Form.Item> */}
 
         <Form.Item
           name="nickname"

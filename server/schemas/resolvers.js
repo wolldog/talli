@@ -23,6 +23,7 @@ const resolvers = {
     group: async (parent, { groupId, groupname }) => {
       return Group.findOne({ _id: groupId, groupname: groupname });
     },
+
   },
   Mutation: {
     addUser: async (parent, { nickname, email, password, phone }) => {

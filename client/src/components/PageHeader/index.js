@@ -14,10 +14,10 @@ const PageHeader = () => {
 
       <Space>
         {Auth.loggedIn() ? (
-          <div>
-            <Button onClick={() => navigate("/logout")}>Logout</Button>
-            <Badge className="notification" count={5}>
-              <BellFilled style={{ fontSize: 20 }} />
+          <div >
+            <Button onClick={() => navigate("/logout") } style={{ margin: "10px"}}>Logout</Button>
+            <Badge className="notification" count={5}  >
+              <BellFilled style={{ fontSize: 20}} />
             </Badge>
           </div>
         ) : (
