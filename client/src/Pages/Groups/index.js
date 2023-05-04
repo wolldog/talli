@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from 'react-router-dom'
 import {
@@ -17,8 +17,6 @@ import {
   Col,
   Modal,
   Input,
-  Select,
-  Form,
   Typography,
 } from "antd";
 
@@ -30,10 +28,11 @@ const { Meta } = Card;
 const Groups = () => {
   //Retrieve the groups the currently logged in user belongs to
   const { loading, data } = useQuery(QUERY_USERS_GROUPS);
-
+  console.log(data);
   //Declare variable 'groups' to hold retrieved data.
-  const groups = data?.groups || {};
-  console.log(groups);
+  const [groups, setGroups] = useState(data.groups)
+  
+  //console.log(groups);
 
   const [addGroup, { error }] = useMutation(ADD_GROUP);
 
@@ -42,6 +41,11 @@ const Groups = () => {
       const { data } = await addGroup({
         variables: { ...formState },
       });
+
+      if(data?.addGroup){
+        setGroups(prev => [...prev, data.addGroup])
+      }
+      
 
       setOpen(false);
       setFormState({ groupname: "" });
