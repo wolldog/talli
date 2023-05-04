@@ -14,21 +14,22 @@ const typeDefs = gql`
 
   type Group {
     _id: ID!
-    admin: ID!
+    admin: ID
     groupname: String
     members: [Member]
     expenses: [Expense]
   }
+
   type Member {
     _id: ID
   }
 
-  type Expense {
+  type Expenses {
     _id: ID!
     expensename: String
     description: String
-    amount: Float
     payer: User
+    paid: Float
     date: String
     attachment: String
   }
@@ -43,9 +44,9 @@ const typeDefs = gql`
     users: [User]
     user(nickname: String): User
     groups: [Group]
-    group(groupId: ID!, groupname: String): Group
+    group(groupId: ID!): Group
     expenses: [Expense]
-    expense: Expense
+    expense(groupId: ID!): Expense
   }
 
   type Mutation {
@@ -63,7 +64,7 @@ const typeDefs = gql`
       expensename: String
       description: String
       amount: Float
-      payer: String
+      payer: ID
       date: String
       attachment: String
     ): Group
