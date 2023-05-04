@@ -24,7 +24,7 @@ const typeDefs = gql`
     _id: ID
   }
 
-  type Expenses {
+  type Expense {
     _id: ID!
     expensename: String
     description: String

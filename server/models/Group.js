@@ -36,3 +36,6 @@ groupSchema.virtual("membersCount").get(function () {
 });
 
 
+const Group = model("Group", groupSchema);
+
+module.exports = Group;
