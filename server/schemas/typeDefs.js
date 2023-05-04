@@ -10,6 +10,8 @@ const typeDefs = gql`
   }
   type Friend {
     _id: ID
+
+    nickname: String
   }
 
   type Group {
