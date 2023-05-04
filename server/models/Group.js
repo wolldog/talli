@@ -1,34 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-const expenseSchema = new Schema({
-  expensename: {
-    type: String,
-    require: true,
-  },
-  description: {
-    type: String,
-    max_length: 100,
-  },
-  // category: {
-  //   type: String,
-  //   enum: ["food", "transport", "acomodation", "enterteiment", "other"],
-  // },
-  amount: {
-    type: Number,
-  },
-  payer: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-  date: {
-    type: Date,
-    default: Date.now(),
-  },
-  attachment: {
-    type: String,
-  },
-});
-
 const groupSchema = new Schema(
   {
     admin: {
@@ -46,7 +17,10 @@ const groupSchema = new Schema(
         ref: "User",
       },
     ],
-    expenses: [expenseSchema],
+    expenses: [{
+      type: Schema.Types.ObjectId,
+      ref: "Expense",
+    },],
   },
   // set this to use virtual below
   {
@@ -61,6 +35,4 @@ groupSchema.virtual("membersCount").get(function () {
   return this.members.length;
 });
 
-const Group = model("Group", groupSchema);
 
-module.exports = Group;

@@ -19,17 +19,17 @@ const typeDefs = gql`
     members: [Member]
     expenses: [Expense]
   }
+
   type Member {
     _id: ID
   }
 
-  type Expense {
+  type Expenses {
     _id: ID!
     expensename: String
     description: String
-    amount: Float
-    groupId: ID
     payer: User
+    paid: Float
     date: String
     attachment: String
   }
@@ -64,10 +64,10 @@ const typeDefs = gql`
       expensename: String
       description: String
       amount: Float
-      payer: String
+      payer: ID
       date: String
       attachment: String
-    ): Expense
+    ): Group
     removeGroup(groupId: ID!): Group
   }
 `;
