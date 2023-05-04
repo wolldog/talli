@@ -25,6 +25,7 @@ const resolvers = {
         .select("-__v")
         .populate("expenses", "members");
     },
+
   },
   Mutation: {
     addUser: async (parent, { nickname, email, password, phone }) => {

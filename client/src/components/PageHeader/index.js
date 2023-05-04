@@ -8,17 +8,23 @@ import Auth from "../../utils/auth.js";
 
 const PageHeader = () => {
   const navigate = useNavigate();
+
+  const logout = (event) => {
+    event.preventDefault();
+    Auth.logout();
+    navigate("/login")
+  };
   return (
     <div className="PageHeader">
       <Image src={headerImage} style={{ maxHeight: "75px" }}></Image>
 
       <Space>
         {Auth.loggedIn() ? (
-          <div>
-            <Button onClick={() => navigate("/logout")}>Logout</Button>
-            <Badge className="notification" count={5}>
-              <BellFilled style={{ fontSize: 20 }} />
-            </Badge>
+          <div >
+            <Button onClick={ logout } style={{ margin: "10px"}}>Logout</Button>
+            {/* <Badge className="notification" count={5}  >
+              <BellFilled style={{ fontSize: 20}} />
+            </Badge> */}
           </div>
         ) : (
           <Menu

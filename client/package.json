@@ -2,6 +2,7 @@
   "name": "outstanding-balance",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@apollo/client": "^3.7.13",

@@ -23,7 +23,7 @@ const SideMenu = () => {
             navigate(item.key);
           }}
           items={[
-            { label: "Home", icon: <ClockCircleOutlined />, key: "/" },
+
             {
               label: "Dashboard",
               icon: <DashboardOutlined />,
