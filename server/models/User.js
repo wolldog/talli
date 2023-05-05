@@ -1,27 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
-// found this to validate phone number, check if works (second option).
-// const yourSchema = new mongoose.Schema({
-//     phoneNr: {
-//       type: Number
-//     }
-//   });
-
-//   yourSchema.path('phoneNr').validate(function validatePhone() {
-//     return ( this.phoneNr > 999999999 );
-//   });
-
-//   yourModel = mongoose.model('yourModel', yourSchema);
-//   Edit:
-
-//   const yourSchema = new mongoose.Schema({
-//     phoneNr: {
-//       type: String,
-//       match: /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/,
-//     }
-//   });
-
 const userSchema = new Schema(
   {
     nickname: {
@@ -49,15 +28,25 @@ const userSchema = new Schema(
         "Please enter a valid phone number",
       ],
     },
-
-    // avatar: {
-    //   // pendent to find how to upload a picture/avatar to DB
-    //   type: String,
-    // },
+    avatar: {
+      type: String,
+    },
     friends: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+      },
+    ],
+    groups: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
+    groupsadministrated: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Group",
       },
     ],
   },
@@ -87,7 +76,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
 // when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
 userSchema.virtual("friendsCount").get(function () {
   return this.friends.length;
-}); 
+});
 
 const User = model("User", userSchema);
 

@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
 const groupSchema = new Schema(
   {
@@ -12,15 +13,45 @@ const groupSchema = new Schema(
       unique: true,
     },
     members: [
+      // friends
       {
         type: Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    expenses: [{
-      type: Schema.Types.ObjectId,
-      ref: "Expense",
-    },],
+    transactions: [
+      {
+        transactionname: {
+          type: String,
+        },
+        description: {
+          type: String,
+          max_length: 100,
+        },
+        payer: {
+          // user is creating the transaction
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        amountpaid: {
+          type: Number,
+        },
+        date: {
+          type: Date,
+          default: Date.now(),
+          get: (timestamp) => dateFormat(timestamp),
+        },
+        attachment: {
+          type: String,
+        },
+      },
+    ],
+    groupdebit: {
+      type: Number,
+    },
+    groupcredit: {
+      type: Number,
+    },
   },
   // set this to use virtual below
   {
@@ -31,10 +62,9 @@ const groupSchema = new Schema(
 );
 
 // when we query a group, we'll also get another field called `membersCount` with the number of users that joined the group
-groupSchema.virtual("membersCount").get(function () {
-  return this.members.length;
-});
-
+// groupSchema.virtual("membersCount").get(function () {
+//   return this.members.length;
+// });
 
 const Group = model("Group", groupSchema);
 
