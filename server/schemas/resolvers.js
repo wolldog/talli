@@ -10,12 +10,14 @@ const resolvers = {
         .populate("friends", "Group");
       return users;
     },
+
     user: async (parent, { nickname }) => {
       const user = await User.findOne({ nickname })
         .select("-__v")
         .populate("friends");
       return user;
     },
+
     me: async (parent, args, context) => {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
@@ -26,6 +28,7 @@ const resolvers = {
       const group = await Group.find().select("-__v").populate("members");
       return group;
     },
+
     group: async (parent, { groupId }) => {
       // if ()
       return Group.findById({ _id: groupId })
@@ -50,28 +53,34 @@ const resolvers = {
       return { token, user };
     },
 
-    // // email no friend id
-    // addFriends: async (_, { userId, friendId }, context) => {
-    //   const updatedUser = await User.findOneAndUpdate(
-    //     // hard code atm = context.user._id
-    //     { _id: "64531810fa6c63d023ae2881" },
-    //     //  friends: userId // userId we want to add to our frienlist.
-    //     { $addToSet: { friends: friendId } },
-    //     { new: true, runValidators: true }
-    //   );
-    //   return updatedUser;
-    // },
+    addFriends: async (_, { email }, context) => {
+      const updatedUser = await User.findOneAndUpdate(
+        // if (context.user)
+        // _id = context.user._id
+        { _id: "6454e5b1332e5874aad80cf1" },
+        {
+          $addToSet: {
+            // User model instead of .objetId, string
+            // changed type: Schema.Types.String,
+            // ref: "User",
+            friends: email,
+          },
+        },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
+    },
 
     addGroup: async (parent, { groupname }, context) => {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
         // admin: context.user._id,
-        admin: "6454963d3f1bb4b521fa8905",
+        admin: "6454ea126975051a25539b1f",
       });
       await User.findOneAndUpdate(
         // { _id: context.user_id },
-        { _id: "6454963d3f1bb4b521fa8905" },
+        { _id: "6454ea126975051a25539b1f" },
         {
           $addToSet: {
             groupsadministrated: newGroup._id,
@@ -86,8 +95,8 @@ const resolvers = {
     },
 
     addMembers: async (_, { userId, memberId }, context) => {
-      // if (context.user = group.admin) {
-      const showMembers = await Group.findOne(
+      // if (context.user.admin) {
+      const member = await Group.findOne(
         // { _id: context.group._id}
         {
           _id: context.group._id,
