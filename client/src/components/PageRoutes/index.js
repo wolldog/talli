@@ -4,6 +4,7 @@ import Home from "../../Pages/Home";
 import Dashboard from "../../Pages/Dashboard";
 import Login from "../../Pages/Login";
 import Groups from "../../Pages/Groups";
+import SingleGroup from "../../Pages/SingleGroup";
 
 const PageRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const PageRoutes = () => {
       <Route path="/login" element={<Login />}></Route>
       <Route path="/join" element={<Join />}></Route>
       <Route path="/groups" element={<Groups />}></Route>
+      <Route path="/groups/:groupId" element={<SingleGroup />} />
     </Routes>
   );
 };
