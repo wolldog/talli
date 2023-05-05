@@ -9,3 +9,21 @@ query Groups {
   }
 }
 `;
+
+export const QUERY_SINGLE_GROUP = gql`
+query Group($groupId: ID!) {
+  group(groupId: $groupId) {
+    groupname
+    admin
+    _id
+    members {
+      _id
+    }
+    expenses {
+      expensename
+      _id
+      description
+    }
+  }
+}
+`;

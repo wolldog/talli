@@ -1,10 +1,12 @@
 import React from "react";
 import { Typography } from "antd";
+import HomeImage from "../../assets/images/TalliHome.png"
 
 const Home = () => {
   return (
     <div className="home">
-      <Typography.Text>How it works - You only see this page if you have no login token</Typography.Text>
+      <Typography.Title style={{color: "var--green"}}>How it works!</Typography.Title>
+      <img src={HomeImage} fluid ></img>
     </div>
   );
 };
