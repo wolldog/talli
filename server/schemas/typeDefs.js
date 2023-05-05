@@ -8,26 +8,14 @@ const typeDefs = gql`
     phone: String
     groupsadministrated: [Group]
     groups: [Group]
-    friends: [Friend]
-  }
-
-  type Friend {
-    _id: ID
-    nickname: String
-    email: String
-  }
-
-  type Member {
-    _id: ID
-    nickname: String
-    email: String
+    friends: [User]
   }
 
   type Group {
     _id: ID!
     admin: ID
     groupname: String
-    members: [Friend]
+    members: [User]
     transactions: [Transaction]
     groupdebit: Float
     groupcredit: Float
@@ -65,7 +53,7 @@ const typeDefs = gql`
       phone: String!
       avatar: String
     ): Auth
-    addFriends(userId: ID): User
+    addFriends(email: String): User
     addGroup(groupname: String, admin: ID): Group
     addMembers(userId: ID, groupId: ID): Group
     removeGroup(groupId: ID!): Group
