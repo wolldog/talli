@@ -55,7 +55,7 @@ const typeDefs = gql`
     ): Auth
     addFriends(friendId: ID): User
     addGroup(groupname: String, admin: ID): Group
-    addMembers(memberId: ID): Group
+    addMembers(memberId:[ID]): Group
     addTransactions(
       transactionname: String
       description: String

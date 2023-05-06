@@ -112,15 +112,19 @@ const resolvers = {
         {
           _id: "64560ef297ede464a4733222",
         },
-        { $addToSet: { members: memberId } },
+        // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
+        { $addToSet: { members: { $each: memberId } } },
         { new: true, runValidators: true }
       );
-      await User.findOneAndUpdate(
+
+      await User.updateMany(
+        // when testing in apollo: {"memberId": ["id1","id2"]}
         { _id: memberId },
         // { $addToSet: { groups: groupId } },
         { $addToSet: { groups: "64560ef297ede464a4733222" } },
         { new: true, runValidators: true }
       );
+
       return memberToGroup;
     },
 
