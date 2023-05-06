@@ -33,7 +33,7 @@ const userSchema = new Schema(
     },
     friends: [
       {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         ref: "User",
       },
     ],
@@ -73,7 +73,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
+// when we query a user, we'll also get another field called `friendsCount` with the number of saved friends we have
 userSchema.virtual("friendsCount").get(function () {
   return this.friends.length;
 });
