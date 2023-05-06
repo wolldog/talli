@@ -53,7 +53,7 @@ const typeDefs = gql`
       phone: String!
       avatar: String
     ): Auth
-    addFriends(email: String): User
+    addFriends(friendId: ID): User
     addGroup(groupname: String, admin: ID): Group
     addMembers(userId: ID, groupId: ID): Group
     removeGroup(groupId: ID!): Group

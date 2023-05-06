@@ -7,7 +7,9 @@ const resolvers = {
     users: async () => {
       const users = await User.find({})
         .select("-__v")
-        .populate("friends", "Group");
+        .populate("friends")
+        .populate("groups")
+        .populate("groupsadministrated");
       return users;
     },
 
@@ -37,7 +39,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (parent, { nickname, email, password, phone }) => {
+    addUser: async (_, { nickname, email, password, phone }) => {
       const user = await User.create({ nickname, email, password, phone });
       const token = signToken(user);
       return { token, user };
@@ -53,19 +55,12 @@ const resolvers = {
       return { token, user };
     },
 
-    addFriends: async (_, { email }, context) => {
+    addFriends: async (_, { friendId }, context) => {
       const updatedUser = await User.findOneAndUpdate(
         // if (context.user)
         // _id = context.user._id
-        { _id: "6454e5b1332e5874aad80cf1" },
-        {
-          $addToSet: {
-            // User model instead of .objetId, string
-            // changed type: Schema.Types.String,
-            // ref: "User",
-            friends: email,
-          },
-        },
+        { _id: "64559787008c6e8e7a8f6901" },
+        { $addToSet: { friends: friendId } },
         { new: true, runValidators: true }
       );
       return updatedUser;
@@ -75,12 +70,12 @@ const resolvers = {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
-        // admin: context.user._id,
-        admin: "6454ea126975051a25539b1f",
+        admin: context.user._id,
+        // admin: "64559787008c6e8e7a8f6901",
       });
       await User.findOneAndUpdate(
-        // { _id: context.user_id },
-        { _id: "6454ea126975051a25539b1f" },
+        { _id: context.user_id },
+        // { _id: "64559787008c6e8e7a8f6901" },
         {
           $addToSet: {
             groupsadministrated: newGroup._id,
@@ -89,15 +84,25 @@ const resolvers = {
         },
         { new: true, runValidators: true }
       );
+      await Group.findOneAndUpdate(
+        { _id: newGroup._id },
+        {
+          $addToSet: {
+            members: context.user._id,
+            // members: "64559787008c6e8e7a8f6901",
+          },
+        }
+      );
       return newGroup;
+
       // }
       // throw new AuthenticationError("You need to be logged in!");
     },
 
-    addMembers: async (_, { userId, memberId }, context) => {
+    addMembers: async (_, { userId }, context) => {
       // if (context.user.admin) {
       const member = await Group.findOne(
-        // { _id: context.group._id}
+        // { _id: context.user}
         {
           _id: context.group._id,
         },

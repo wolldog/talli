@@ -13,7 +13,6 @@ const groupSchema = new Schema(
       unique: true,
     },
     members: [
-      // friends
       {
         type: Schema.Types.ObjectId,
         ref: "User",
