@@ -19,11 +19,7 @@ query Group($groupId: ID!) {
     members {
       _id
     }
-    expenses {
-      expensename
-      _id
-      description
-    }
-  }
+
+}
 }
 `;
