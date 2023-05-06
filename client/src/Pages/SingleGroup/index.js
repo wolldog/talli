@@ -19,6 +19,7 @@ import { useQuery } from '@apollo/client';
 
 import { QUERY_SINGLE_GROUP } from '../../utils/queries';
 // import MemberForm from '../../components/MemberForm';
+import MemberList from '../../components/MemberList'
 // import { ADD_MEMBER } from '../../utils/mutations';
 
 
