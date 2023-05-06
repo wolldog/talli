@@ -1,7 +1,6 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Group } = require("../models");
 const { signToken } = require("../utils/auth");
-const { findOneAndUpdate } = require("../models/Group");
 
 const resolvers = {
   Query: {
@@ -17,7 +16,9 @@ const resolvers = {
     user: async (parent, { nickname }) => {
       const user = await User.findOne({ nickname })
         .select("-__v")
-        .populate("friends");
+        .populate("friends")
+        .populate("groups")
+        .populate("groupsadministrated");
       return user;
     },
 
@@ -75,12 +76,12 @@ const resolvers = {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
-        admin: context.user._id,
-        // admin: "64559787008c6e8e7a8f6901",
+        // admin: context.user._id,
+        admin: "64559787008c6e8e7a8f6901",
       });
       await User.findOneAndUpdate(
-        { _id: context.user_id },
-        // { _id: "64559787008c6e8e7a8f6901" },
+        // { _id: context.user_id },
+        { _id: "64559787008c6e8e7a8f6901" },
         {
           $addToSet: {
             groupsadministrated: newGroup._id,
@@ -93,8 +94,8 @@ const resolvers = {
         { _id: newGroup._id },
         {
           $addToSet: {
-            members: context.user._id,
-            // members: "64559787008c6e8e7a8f6901",
+            // members: context.user._id,
+            members: "64559787008c6e8e7a8f6901",
           },
         },
         { new: true, runValidators: true }
@@ -109,7 +110,7 @@ const resolvers = {
       const memberToGroup = await Group.findOneAndUpdate(
         // { _id:groupId}
         {
-          _id: "6455b66b0c27fdef916602aa",
+          _id: "64560ef297ede464a4733222",
         },
         { $addToSet: { members: memberId } },
         { new: true, runValidators: true }
@@ -117,7 +118,7 @@ const resolvers = {
       await User.findOneAndUpdate(
         { _id: memberId },
         // { $addToSet: { groups: groupId } },
-        { $addToSet: { groups: "6455b66b0c27fdef916602aa" } },
+        { $addToSet: { groups: "64560ef297ede464a4733222" } },
         { new: true, runValidators: true }
       );
       return memberToGroup;
@@ -130,7 +131,7 @@ const resolvers = {
     ) => {
       const newTransaction = await Group.findOneAndUpdate(
         // { _id: groupId },
-        { _id: "6455b66b0c27fdef916602aa" },
+        { _id: "645616d057b51922dad2047f" },
         {
           $addToSet: {
             transactions: {
@@ -156,8 +157,9 @@ const resolvers = {
       await User.findOneAndUpdate(
         // { _id: context.user._id },
         { _id: "64559787008c6e8e7a8f6901" },
-        { $pull: { groupsadministrated: groupId } }
+        { $pull: { groupsadministrated: groupId, groups: groupId } }
       );
+
       return groupRemoved;
     },
   },
