@@ -1,6 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Group } = require("../models");
 const { signToken } = require("../utils/auth");
+const { findOneAndUpdate } = require("../models/Group");
 
 const resolvers = {
   Query: {
@@ -122,31 +123,42 @@ const resolvers = {
       return memberToGroup;
     },
 
-    // addExpense: async (
-    //   parent,
-    //   { description, amount, payer, date, attachment }
-    // ) => {
-    //   const addExpenseUpdated = await Group.findOneAndUpdate(
-    //     { _id: "groupId" },
-    //     {
-    //       $addToSet: {
-    //         expenses: description,
-    //         amount,
-    //         groupId,
-    //         payer,
-    //         date,
-    //         attachment,
-    //       },
-    //     },
-    //     { new: true, runValidators: true }
-    //   );
-    // },
+    addTransactions: async (
+      _,
+      { groupId, transactionname, description, amountpaid, attachment },
+      context
+    ) => {
+      const newTransaction = await Group.findOneAndUpdate(
+        // { _id: groupId },
+        { _id: "6455b66b0c27fdef916602aa" },
+        {
+          $addToSet: {
+            transactions: {
+              transactionname,
+              description,
+              // payer: context.user._id,
+              payer: "64559787008c6e8e7a8f6901",
+              amountpaid,
+              attachment,
+            },
+            groupdebit: amountpaid,
+          },
+        },
+        { new: true, runValidators: true }
+      );
+      return newTransaction;
+    },
 
     removeGroup: async (parent, { groupId }, context) => {
-      const group = await Group.findByIdAndDelete({
+      const groupRemoved = await Group.findOneAndDelete({
         _id: groupId,
       });
-      return group;
+      await User.findOneAndUpdate(
+        // { _id: context.user._id },
+        { _id: "64559787008c6e8e7a8f6901" },
+        { $pull: { groupsadministrated: groupId } }
+      );
+      return groupRemoved;
     },
   },
 };
