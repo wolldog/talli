@@ -49,6 +49,13 @@ const userSchema = new Schema(
         ref: "Group",
       },
     ],
+    paymentsmade: [
+      {
+        transactionId: {
+          type:String
+        },
+      },
+    ],
   },
   // set this to use virtual below
   {
