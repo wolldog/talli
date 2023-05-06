@@ -16,7 +16,7 @@ const PageHeader = () => {
   };
   return (
     <div className="PageHeader">
-      <Image src={headerImage} style={{ maxHeight: "75px" }}></Image>
+      <img src={headerImage} style={{ maxHeight: "75px" }}/>
 
       <Space>
         {Auth.loggedIn() ? (

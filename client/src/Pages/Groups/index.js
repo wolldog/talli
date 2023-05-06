@@ -1,6 +1,7 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import Auth from "../../utils/auth.js";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -28,10 +29,12 @@ const { Meta } = Card;
 const Groups = () => {
   //Retrieve the groups the currently logged in user belongs to
   const { loading, data } = useQuery(QUERY_USERS_GROUPS);
-  console.log(data);
+
   //Declare variable 'groups' to hold retrieved data.
-  const [groups, setGroups] = useState(data.groups)
-  
+  // const [groups, setGroups] = useState(data.groups)
+
+  const groups = data?.groups || [];
+
   //console.log(groups);
 
   const [addGroup, { error }] = useMutation(ADD_GROUP);
@@ -42,17 +45,14 @@ const Groups = () => {
         variables: { ...formState },
       });
 
-      if(data?.addGroup){
-        setGroups(prev => [...prev, data.addGroup])
-      }
-      
-
+      // if(data?.addGroup){
+      //   setGroups(prev => [...prev, data.addGroup])
+      // }
       setOpen(false);
       setFormState({ groupname: "" });
     } catch (err) {
-      if(err) {
-
-      };
+      if (err) {
+      }
     }
   };
 
@@ -86,90 +86,99 @@ const Groups = () => {
 
   return (
     <div className="groups">
-      {groups.length === 0 ? (
-        <Row justify="center">
-          <Col span={24}>
-            <Typography.Title>Create a group to begin </Typography.Title>
-          </Col>
-        </Row>
-      ) : (
-       null
-      )}
+      {Auth.loggedIn() ? (
+        <>
+          {groups.length === 0 ? (
+            <Row justify="center">
+              <Col span={24}>
+                <Typography.Title>Create a group to begin </Typography.Title>
+              </Col>
+            </Row>
+          ) : null}
 
-      <Row justify="center">
-        <Col span={4}>
-          <Button type="primary" onClick={showModal}>
-            Add a group
-          </Button>
-          {error ? (
+          <Row justify="center">
+            <Col span={4}>
+              <Button type="primary" onClick={showModal}>
+                Add a group
+              </Button>
+              {error ? (
+                <div>
+                  <p className="error-text">
+                    The provided credentials are incorrect
+                  </p>
+                </div>
+              ) : null}
+            </Col>
+          </Row>
+
           <div>
-            <p className="error-text">The provided credentials are incorrect</p>
+            <Modal
+              title="Add a group"
+              open={open}
+              onOk={({ target }) => {
+                setConfirmLoading();
+                console.log(target);
+                handleAddGroup(target);
+                setFormState({ groupname: "" });
+                setOpen(false);
+              }}
+              okText="Add Group"
+              confirmLoading={confirmLoading}
+              onCancel={() => {
+                setOpen(false);
+              }}
+            >
+              <Input
+                placeholder="Enter your group name"
+                className="modalInput"
+                name="groupname"
+                type="text"
+                value={formState.groupname}
+                onChange={handleChange}
+              ></Input>
+            </Modal>
           </div>
-        ) : null}
-        </Col>
-      </Row>
 
-      <div>
-        <Modal
-          title="Add a group"
-          open={open}
-          onOk={({ target }) => {
-            setConfirmLoading();
-            console.log(target);
-            handleAddGroup(target);
-            setFormState({ groupname: "" });
-            setOpen(false);
-          }}
-          okText="Add Group"
-          confirmLoading={confirmLoading}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        >
-          <Input
-            placeholder="Enter your group name"
-            className="modalInput"
-            name="groupname"
-            type="text"
-            value={formState.groupname}
-            onChange={handleChange}
-          ></Input>
-        </Modal>
-      </div>
-
-      <Divider />
-      <Space wrap>
-        {groups &&
-          groups.map((group) => (
-            <div className="groupCard" key={group._id}>
-              
-              <Card
-                style={{
-                  width: 300,
-                }}
-                cover={
-                  <img
-                    alt="example"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                  />
-                }
-                actions={[
-                  <SettingOutlined key="setting" />,
-                  <EditOutlined key="edit" />,
-                  <EllipsisOutlined key="ellipsis" />,
-                ]}
-              >
-                <Meta
-                  avatar={
-                    <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-                  }
-                  title={group.groupname}
-                />
-              </Card>
-             
-            </div>
-          ))}
-      </Space>
+          <Divider />
+          <Space wrap>
+            {groups &&
+              groups.map((group) => (
+                <div className="groupCard" key={group._id}>
+                  <Link className="cardLink" to={`./${group._id}`}>
+                    <Card
+                      style={{
+                        width: 300,
+                      }}
+                      cover={
+                        <img
+                          alt="example"
+                          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        />
+                      }
+                      actions={[
+                        <SettingOutlined key="setting" />,
+                        <EditOutlined key="edit" />,
+                        <EllipsisOutlined key="ellipsis" />,
+                      ]}
+                    >
+                      <Meta
+                        avatar={
+                          <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+                        }
+                        title={group.groupname}
+                      />
+                    </Card>
+                  </Link>
+                </div>
+              ))}
+          </Space>
+        </>
+      ) : (
+        <p>
+          You need to be logged in to share your thoughts. Please{" "}
+          <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
+        </p>
+      )}
     </div>
   );
 };

@@ -16,7 +16,11 @@ import {
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
+
 import { QUERY_SINGLE_GROUP } from '../../utils/queries';
+// import MemberForm from '../../components/MemberForm';
+// import { ADD_MEMBER } from '../../utils/mutations';
+
 
 const SingleGroup = () => {
 
@@ -28,14 +32,22 @@ const SingleGroup = () => {
       });
     
       const group = data?.group || {};
+
+      
     
       if (loading) {
         return <div>Loading...</div>;
       }
 
       return (
+        <div>
         <Typography.Title>{group.groupname}</Typography.Title>
+        <div className='MemberList'>
+          <MemberList  members={group.members} />
+        </div>
+        
 
+        </div>
       );
 
 

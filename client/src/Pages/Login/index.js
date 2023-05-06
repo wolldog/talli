@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Typography } from "antd";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import Auth from "../../utils/auth.js";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations.js";
 
+
 const Login = () => {
+
   const [formState, setFormState] = useState({ email: "", password: "" });
 
   const [login, { error, data }] = useMutation(LOGIN_USER);
 
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
 
