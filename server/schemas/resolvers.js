@@ -23,7 +23,11 @@ const resolvers = {
     me: async (parent, args, context) => {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
-      return User.findOne({ _id: context.user._id });
+      return User.findOne({ _id: context.user._id })
+        .select("-__v")
+        .populate("friends")
+        .populate("groups")
+        .populate("groupsadministrated");
     },
 
     groups: async () => {
@@ -56,8 +60,8 @@ const resolvers = {
     },
 
     addFriends: async (_, { friendId }, context) => {
+      // if (context.user)
       const updatedUser = await User.findOneAndUpdate(
-        // if (context.user)
         // _id = context.user._id
         { _id: "64559787008c6e8e7a8f6901" },
         { $addToSet: { friends: friendId } },
@@ -91,7 +95,8 @@ const resolvers = {
             members: context.user._id,
             // members: "64559787008c6e8e7a8f6901",
           },
-        }
+        },
+        { new: true, runValidators: true }
       );
       return newGroup;
 
@@ -99,23 +104,22 @@ const resolvers = {
       // throw new AuthenticationError("You need to be logged in!");
     },
 
-    addMembers: async (_, { userId }, context) => {
-      // if (context.user.admin) {
-      const member = await Group.findOne(
-        // { _id: context.user}
+    addMembers: async (_, { groupId, memberId }, context) => {
+      const memberToGroup = await Group.findOneAndUpdate(
+        // { _id:groupId}
         {
-          _id: context.group._id,
+          _id: "6455b66b0c27fdef916602aa",
         },
-        // { $addToSet: { members: userId } },
-        {
-          $addToSet: {
-            members: { memberId: userId },
-          },
-        },
+        { $addToSet: { members: memberId } },
         { new: true, runValidators: true }
       );
-      return updatedGroup;
-      // }
+      await User.findOneAndUpdate(
+        { _id: memberId },
+        // { $addToSet: { groups: groupId } },
+        { $addToSet: { groups: "6455b66b0c27fdef916602aa" } },
+        { new: true, runValidators: true }
+      );
+      return memberToGroup;
     },
 
     // addExpense: async (
