@@ -16,14 +16,20 @@ const resolvers = {
     user: async (parent, { nickname }) => {
       const user = await User.findOne({ nickname })
         .select("-__v")
-        .populate("friends");
+        .populate("friends")
+        .populate("groups")
+        .populate("groupsadministrated");
       return user;
     },
 
     me: async (parent, args, context) => {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
-      return User.findOne({ _id: context.user._id });
+      return User.findOne({ _id: context.user._id })
+        .select("-__v")
+        .populate("friends")
+        .populate("groups")
+        .populate("groupsadministrated");
     },
 
     groups: async () => {
@@ -56,8 +62,8 @@ const resolvers = {
     },
 
     addFriends: async (_, { friendId }, context) => {
+      // if (context.user)
       const updatedUser = await User.findOneAndUpdate(
-        // if (context.user)
         // _id = context.user._id
         { _id: "64559787008c6e8e7a8f6901" },
         { $addToSet: { friends: friendId } },
@@ -70,12 +76,12 @@ const resolvers = {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
-        admin: context.user._id,
-        // admin: "64559787008c6e8e7a8f6901",
+        // admin: context.user._id,
+        admin: "64559787008c6e8e7a8f6901",
       });
       await User.findOneAndUpdate(
-        { _id: context.user_id },
-        // { _id: "64559787008c6e8e7a8f6901" },
+        // { _id: context.user_id },
+        { _id: "64559787008c6e8e7a8f6901" },
         {
           $addToSet: {
             groupsadministrated: newGroup._id,
@@ -88,10 +94,11 @@ const resolvers = {
         { _id: newGroup._id },
         {
           $addToSet: {
-            members: context.user._id,
-            // members: "64559787008c6e8e7a8f6901",
+            // members: context.user._id,
+            members: "64559787008c6e8e7a8f6901",
           },
-        }
+        },
+        { new: true, runValidators: true }
       );
       return newGroup;
 
@@ -99,50 +106,65 @@ const resolvers = {
       // throw new AuthenticationError("You need to be logged in!");
     },
 
-    addMembers: async (_, { userId }, context) => {
-      // if (context.user.admin) {
-      const member = await Group.findOne(
-        // { _id: context.user}
+    addMembers: async (_, { groupId, memberId }, context) => {
+      const memberToGroup = await Group.findOneAndUpdate(
+        // { _id:groupId}
         {
-          _id: context.group._id,
+          _id: "64560ef297ede464a4733222",
         },
-        // { $addToSet: { members: userId } },
+        // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
+        { $addToSet: { members: { $each: memberId } } },
+        { new: true, runValidators: true }
+      );
+
+      await User.updateMany(
+        // when testing in apollo: {"memberId": ["id1","id2"]}
+        { _id: memberId },
+        // { $addToSet: { groups: groupId } },
+        { $addToSet: { groups: "64560ef297ede464a4733222" } },
+        { new: true, runValidators: true }
+      );
+
+      return memberToGroup;
+    },
+
+    addTransactions: async (
+      _,
+      { groupId, transactionname, description, amountpaid, attachment },
+      context
+    ) => {
+      const newTransaction = await Group.findOneAndUpdate(
+        // { _id: groupId },
+        { _id: "645616d057b51922dad2047f" },
         {
           $addToSet: {
-            members: { memberId: userId },
+            transactions: {
+              transactionname,
+              description,
+              // payer: context.user._id,
+              payer: "64559787008c6e8e7a8f6901",
+              amountpaid,
+              attachment,
+            },
+            groupdebit: amountpaid,
           },
         },
         { new: true, runValidators: true }
       );
-      return updatedGroup;
-      // }
+      return newTransaction;
     },
 
-    // addExpense: async (
-    //   parent,
-    //   { description, amount, payer, date, attachment }
-    // ) => {
-    //   const addExpenseUpdated = await Group.findOneAndUpdate(
-    //     { _id: "groupId" },
-    //     {
-    //       $addToSet: {
-    //         expenses: description,
-    //         amount,
-    //         groupId,
-    //         payer,
-    //         date,
-    //         attachment,
-    //       },
-    //     },
-    //     { new: true, runValidators: true }
-    //   );
-    // },
-
     removeGroup: async (parent, { groupId }, context) => {
-      const group = await Group.findByIdAndDelete({
+      const groupRemoved = await Group.findOneAndDelete({
         _id: groupId,
       });
-      return group;
+      await User.findOneAndUpdate(
+        // { _id: context.user._id },
+        { _id: "64559787008c6e8e7a8f6901" },
+        { $pull: { groupsadministrated: groupId, groups: groupId } }
+      );
+
+      return groupRemoved;
     },
   },
 };
