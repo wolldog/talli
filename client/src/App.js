@@ -46,7 +46,7 @@ function App() {
     <ApolloProvider client={client}>
      <PageHeader />
       <Space className="main">
-        <SideMenu></SideMenu>
+        {/* <SideMenu></SideMenu> */}
         <PageConent></PageConent>
       </Space>
     </ApolloProvider>

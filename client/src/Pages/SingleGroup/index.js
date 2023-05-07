@@ -1,58 +1,41 @@
-import React from 'react';
-import {
-    Avatar,
-    Card,
-    Space,
-    Divider,
-    Button,
-    Row,
-    Col,
-    Modal,
-    Input,
-    Typography,
-  } from "antd"; 
+import React from "react";
+import { Space, Typography } from "antd";
 
 // Import the `useParams()` hook
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
 
+import { QUERY_SINGLE_GROUP } from "../../utils/queries";
 
-import { QUERY_SINGLE_GROUP } from '../../utils/queries';
-// import MemberForm from '../../components/MemberForm';
-// import { ADD_MEMBER } from '../../utils/mutations';
+import MemberList from "../../components/MemberList";
 
+import FriendList from "../../components/FriendList";
 
 const SingleGroup = () => {
+  const { groupId } = useParams();
 
-    const { groupId } = useParams();
+  const { loading, data } = useQuery(QUERY_SINGLE_GROUP, {
+    // pass URL parameter
+    variables: { groupId: groupId },
+  });
 
-    const { loading, data } = useQuery(QUERY_SINGLE_GROUP, {
-        // pass URL parameter
-        variables: { groupId: groupId },
-      });
-    
-      const group = data?.group || {};
+  const group = data?.group || {};
 
-      
-    
-      if (loading) {
-        return <div>Loading...</div>;
-      }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-      return (
-        <div>
-        <Typography.Title>{group.groupname}</Typography.Title>
-        <div className='MemberList'>
-          <MemberList  members={group.members} />
+  return (
+    <div>
+      <Typography.Title>{group.groupname}</Typography.Title>
+      <Space>
+        <div className="MemberList">
+          <MemberList members={group.members} />
         </div>
-        
-
-        </div>
-      );
-
-
-
+        <FriendList />
+      </Space>
+    </div>
+  );
 };
-
 
 export default SingleGroup;
