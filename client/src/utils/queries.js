@@ -24,3 +24,34 @@ query Group($groupId: ID!) {
   }
 }
 `;
+
+export const QUERY_ME = gql`
+query Me {
+  me {
+    nickname
+    email
+    phone
+    groupsadministrated {
+      _id
+      groupname
+    }
+    groups {
+      _id
+      admin
+      groupname
+      members {
+        _id
+        nickname
+        email
+      }
+    }
+    friends {
+      nickname
+      _id
+      email
+      phone
+    }
+  }
+}
+`;
+
