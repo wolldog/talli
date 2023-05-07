@@ -3,10 +3,12 @@ const dateFormat = require("../utils/dateFormat");
 
 const groupSchema = new Schema(
   {
+    // admin=userId
     admin: {
-      type: String,
-      require: true,
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
+
     groupname: {
       type: String,
       require: true,
@@ -45,12 +47,16 @@ const groupSchema = new Schema(
         },
       },
     ],
-    groupdebit: {
-      type: Number,
-    },
-    groupcredit: {
-      type: Number,
-    },
+    groupdebit: [
+      {
+        type: Number,
+      },
+    ],
+    groupcredit: [
+      {
+        type: Number,
+      },
+    ],
   },
   // set this to use virtual below
   {
