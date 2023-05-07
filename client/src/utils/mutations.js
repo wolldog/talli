@@ -36,3 +36,15 @@ mutation AddGroup($groupname: String) {
   }
 }
 `;
+
+export const ADD_MEMBER = gql`
+mutation AddMembers($memberId: [ID]) {
+  addMembers(memberId: $memberId) {
+    members {
+      _id
+      nickname
+      email
+    }
+  }
+}
+`

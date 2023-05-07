@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
 import {
   EditOutlined,
@@ -174,10 +174,9 @@ const Groups = () => {
           </Space>
         </>
       ) : (
-        <p>
-          You need to be logged in to share your thoughts. Please{" "}
-          <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
-        </p>
+      
+        <Navigate to="/" replace={true}/>
+        
       )}
     </div>
   );
