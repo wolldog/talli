@@ -112,7 +112,7 @@ const resolvers = {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
-        // admin: context.user._id (adminId),
+        // admin: context.user._id,
         admin: userId,
       });
       await User.findOneAndUpdate(
@@ -137,9 +137,6 @@ const resolvers = {
         { new: true, runValidators: true }
       );
       return newGroup;
-
-      // }
-      // throw new AuthenticationError("You need to be logged in!");
     },
 
     addMembers: async (_, { groupId, memberId }, context) => {
