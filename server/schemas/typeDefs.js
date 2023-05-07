@@ -13,7 +13,7 @@ const typeDefs = gql`
 
   type Group {
     _id: ID!
-    admin: ID
+    admin: User
     groupname: String
     members: [User]
     transactions: [Transaction]
@@ -54,8 +54,8 @@ const typeDefs = gql`
       avatar: String
     ): Auth
     addFriends(friendId: ID): User
-    addGroup(groupname: String, admin: ID): Group
-    addMembers(memberId:[ID]): Group
+    addGroup(groupname: String, userId: ID): Group
+    addMembers(memberId: [ID]): Group
     addTransactions(
       transactionname: String
       description: String
