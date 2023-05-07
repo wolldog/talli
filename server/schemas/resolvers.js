@@ -8,8 +8,17 @@ const resolvers = {
       const users = await User.find({})
         .select("-__v")
         .populate("friends")
+        .populate("groupsadministrated")
+        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate("groups")
-        .populate("groupsadministrated");
+        .populate({
+          path: "groups",
+          populate: [
+            { path: "admin" },
+            { path: "members" },
+            { path: "transactions", populate: "payer" },
+          ],
+        });
       return users;
     },
 
@@ -17,19 +26,38 @@ const resolvers = {
       const user = await User.findOne({ nickname })
         .select("-__v")
         .populate("friends")
+        .populate("groupsadministrated")
+        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate("groups")
-        .populate("groupsadministrated");
+        .populate({
+          path: "groups",
+          populate: [
+            { path: "admin" },
+            { path: "members" },
+            { path: "transactions", populate: "payer" },
+          ],
+        });
       return user;
     },
 
     me: async (parent, args, context) => {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
-      return User.findOne({ _id: context.user._id })
+      const me = User.findOne({ _id: context.user._id })
         .select("-__v")
         .populate("friends")
+        .populate("groupsadministrated")
+        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate("groups")
-        .populate("groupsadministrated");
+        .populate({
+          path: "groups",
+          populate: [
+            { path: "admin" },
+            { path: "members" },
+            { path: "transactions", populate: "payer" },
+          ],
+        });
+      return me;
     },
 
     groups: async () => {
@@ -37,7 +65,8 @@ const resolvers = {
         .select("-__v")
         .populate("members")
         .populate("admin")
-        .populate("transactions");
+        .populate("transactions")
+        .populate({ path: "transactions", populate: "payer" });
       return group;
     },
 
@@ -46,8 +75,9 @@ const resolvers = {
       return Group.findById({ _id: groupId })
         .select("-__v")
         .populate("members")
-        .populate("admin");
-      // .populate("transactions");
+        .populate("admin")
+        .populate("transactions")
+        .populate({ path: "transactions", populate: "payer" });
     },
   },
   Mutation: {
@@ -82,7 +112,7 @@ const resolvers = {
       // if (context.user) {
       const newGroup = await Group.create({
         groupname,
-        // admin: context.user._id (adminId),
+        // admin: context.user._id,
         admin: userId,
       });
       await User.findOneAndUpdate(
@@ -107,9 +137,6 @@ const resolvers = {
         { new: true, runValidators: true }
       );
       return newGroup;
-
-      // }
-      // throw new AuthenticationError("You need to be logged in!");
     },
 
     addMembers: async (_, { groupId, memberId }, context) => {
