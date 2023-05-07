@@ -13,6 +13,7 @@ import {
   List,
 } from "antd";
 
+
 const MemberList = ({ members = [] }) => {
   if (!members.length) {
     return (
@@ -27,11 +28,11 @@ const MemberList = ({ members = [] }) => {
       <List
         size="large"
         header={<div>Group Members</div>}
-        footer={
-          <div>
-            <Button>Add Member</Button>
-          </div>
-        }
+        // footer={
+        //   <div>
+        //     <Button>Add Member</Button>
+        //   </div>
+        // }
         dataSource={members}
         bordered={true}
         renderItem={(item, index) => (
