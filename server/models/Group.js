@@ -47,12 +47,16 @@ const groupSchema = new Schema(
         },
       },
     ],
-    groupdebit: {
-      type: Number,
-    },
-    groupcredit: {
-      type: Number,
-    },
+    groupdebit: [
+      {
+        type: Number,
+      },
+    ],
+    groupcredit: [
+      {
+        type: Number,
+      },
+    ],
   },
   // set this to use virtual below
   {

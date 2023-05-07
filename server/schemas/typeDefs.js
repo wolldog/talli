@@ -17,8 +17,8 @@ const typeDefs = gql`
     groupname: String
     members: [User]
     transactions: [Transaction]
-    groupdebit: Float
-    groupcredit: Float
+    groupdebit: [Float]
+    groupcredit: [Float]
   }
 
   type Transaction {

@@ -2,7 +2,6 @@ const { AuthenticationError } = require("apollo-server-express");
 const { User, Group } = require("../models");
 const { signToken } = require("../utils/auth");
 
-
 const resolvers = {
   Query: {
     users: async () => {
@@ -37,7 +36,8 @@ const resolvers = {
       const group = await Group.find({})
         .select("-__v")
         .populate("members")
-        .populate("admin");
+        .populate("admin")
+        .populate("transactions");
       return group;
     },
 
@@ -47,6 +47,7 @@ const resolvers = {
         .select("-__v")
         .populate("members")
         .populate("admin");
+      // .populate("transactions");
     },
   },
   Mutation: {
@@ -140,14 +141,14 @@ const resolvers = {
     ) => {
       const newTransaction = await Group.findOneAndUpdate(
         // { _id: groupId },
-        { _id: "645616d057b51922dad2047f" },
+        { _id: "64575b6ed52dde2f7d54d9cc" },
         {
           $addToSet: {
             transactions: {
               transactionname,
               description,
               // payer: context.user._id,
-              payer: "64559787008c6e8e7a8f6901",
+              payer: "6455c6b978f8093dea6919b5",
               amountpaid,
               attachment,
             },
