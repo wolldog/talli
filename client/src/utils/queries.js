@@ -14,12 +14,15 @@ export const QUERY_SINGLE_GROUP = gql`
 query Group($groupId: ID!) {
   group(groupId: $groupId) {
     _id
-    admin
+    admin {
+      _id
+    }
     groupname
     members {
       _id
       nickname
       email
+      phone
     }
   }
 }
@@ -37,7 +40,10 @@ query Me {
     }
     groups {
       _id
-      admin
+      admin {
+        _id
+        nickname
+      }
       groupname
       members {
         _id

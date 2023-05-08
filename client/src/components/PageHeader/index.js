@@ -1,49 +1,36 @@
 import React from "react";
-import { Badge, Image, Space, Menu, Button } from "antd";
+import { Space, Typography, Button } from "antd";
+import { DashboardOutlined } from "@ant-design/icons"
 import headerImage from "./../../assets/images/headerImage.png";
-import { BellFilled } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
 import Auth from "../../utils/auth.js";
 
 const PageHeader = () => {
   const navigate = useNavigate();
+ 
 
   const logout = (event) => {
-    event.preventDefault();
     Auth.logout();
-    navigate("/login")
+    window.location.assign('/')
+    // navigate("../../");
   };
   return (
     <div className="PageHeader">
-      <img src={headerImage} style={{ maxHeight: "75px" }}/>
+      <img src={headerImage} style={{ maxHeight: "75px" }} />
 
       <Space>
         {Auth.loggedIn() ? (
-          <div >
-            <Button onClick={ logout } style={{ margin: "10px"}}>Logout</Button>
-            {/* <Badge className="notification" count={5}  >
-              <BellFilled style={{ fontSize: 20}} />
-            </Badge> */}
+          <div>
+            <Space>
+              <Link to="/" replace={true}>
+                <Typography>{Auth.getProfile().data.nickname}'s Dashboard <DashboardOutlined style={{color: "black", fontSize: "20px"}}></DashboardOutlined></Typography>
+              </Link>
+              <Button onClick={logout} style={{ margin: "10px" }}>
+                Logout
+              </Button>
+            </Space>
           </div>
-        ) : (
-          <Menu
-            onClick={(item) => {
-              navigate(item.key);
-            }}
-            mode="horizontal"
-            items={[
-              {
-                label: "Login",
-                key: "/login",
-              },
-              {
-                label: "Join",
-                key: "/join",
-              },
-            ]}
-          ></Menu>
-        )}
+        ) : null}
       </Space>
     </div>
   );

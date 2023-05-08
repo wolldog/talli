@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
 import {
   EditOutlined,
@@ -21,19 +21,19 @@ import {
   Typography,
 } from "antd";
 
-import { QUERY_USERS_GROUPS } from "../../utils/queries.js";
+import { QUERY_ME } from "../../utils/queries.js";
 import { ADD_GROUP } from "../../utils/mutations.js";
 
 const { Meta } = Card;
 
 const Groups = () => {
   //Retrieve the groups the currently logged in user belongs to
-  const { loading, data } = useQuery(QUERY_USERS_GROUPS);
+  const { loading, data } = useQuery(QUERY_ME);
 
   //Declare variable 'groups' to hold retrieved data.
   // const [groups, setGroups] = useState(data.groups)
 
-  const groups = data?.groups || [];
+  const groups = data?.me.groups || [];
 
   //console.log(groups);
 
@@ -174,10 +174,9 @@ const Groups = () => {
           </Space>
         </>
       ) : (
-        <p>
-          You need to be logged in to share your thoughts. Please{" "}
-          <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
-        </p>
+      
+        <Navigate to="/" replace={true}/>
+        
       )}
     </div>
   );
