@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from '@apollo/client';
 import { Link, useNavigate } from "react-router-dom";
 
 import Auth from "../../utils/auth.js";
@@ -10,13 +11,13 @@ import {
   Button,
 } from "antd";
 
-import DashboardImage from "../../assets/images/TalliDashboard.png";
-import HomeImage from "../../assets/images/TalliHome.png";
 
-const Home = ({ groups, friends, me }) => {
-  console.log(me);
+import HomeImage from "../../assets/images/TalliHome.png";
+import Dashboard from "../../components/Dashboard/index.js";
+
+const Home = () => {
+ 
   const navigate = useNavigate();
-  const { Meta } = Card;
 
   return (
     <div className="home">
@@ -25,51 +26,8 @@ const Home = ({ groups, friends, me }) => {
           <Typography.Title>My Dashboard</Typography.Title>
 
           <Space>
-            <Link to={"/groups"}>
-              <Card
-                hoverable
-                style={{
-                  width: 240,
-                }}
-                cover={<img alt="example" src={DashboardImage} />}
-              >
-                <Meta title="My Groups" />
-              </Card>
-            </Link>
-
-            <Link>
-              <Card
-                hoverable
-                style={{
-                  width: 240,
-                }}
-                cover={<img alt="example" src={DashboardImage} />}
-              >
-                <Meta title="My Friends" />
-              </Card>
-            </Link>
-
-            <Card
-              hoverable
-              style={{
-                width: 240,
-              }}
-              cover={<img alt="example" src={DashboardImage} />}
-            >
-              <Meta title="I owe" />
-
-              <p>Me</p>
-            </Card>
-
-            <Card
-              hoverable
-              style={{
-                width: 240,
-              }}
-              cover={<img alt="example" src={DashboardImage} />}
-            >
-              <Meta title="I am owed" /> <p>Me</p>
-            </Card>
+            
+            <Dashboard  />
           </Space>
         </div>
       ) : (
