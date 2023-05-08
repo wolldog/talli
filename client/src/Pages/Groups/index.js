@@ -28,20 +28,19 @@ import { ADD_GROUP } from "../../utils/mutations.js";
 const { Meta } = Card;
 
 const Groups = () => {
-
   //Retrieve the groups the currently logged in user belongs to
   const { loading, data } = useQuery(QUERY_ME);
 
   //Declare variable 'groups' to hold retrieved data.
   // const [groups, setGroups] = useState(data.groups)
 
-  const me = data.me || {};
+  // const me = data.me || {};
 
-  console.log(me)
+  // console.log(me);
 
   const groups = data?.me.groups || [];
 
-  console.log(groups);
+  // console.log(groups);
 
   const [addGroup, { error }] = useMutation(ADD_GROUP);
 
@@ -57,7 +56,7 @@ const Groups = () => {
 
       setOpen(false);
       setFormState({ groupname: "" });
-
+      window.location.reload();
     } catch (err) {
       if (err) {
       }
@@ -90,110 +89,102 @@ const Groups = () => {
 
   if (loading) {
     return <div>Loading...</div>;
-  }
+  } else {
+    return (
+      <div className="groups">
+        {Auth.loggedIn() ? (
+          <>
+            {groups.length === 0 ? (
+              <Row justify="center">
+                <Col span={24}>
+                  <Typography.Title>Create a group to begin </Typography.Title>
+                </Col>
+              </Row>
+            ) : null}
 
-  return (
-
-    <div className="groups">
-      
-      {Auth.loggedIn() ? (
-
-
-        <>
-          {groups.length === 0 ? ( 
-            
             <Row justify="center">
-              <Col span={24}>
-                <Typography.Title>Create a group to begin </Typography.Title>
+              <Col span={4}>
+                <Button type="primary" onClick={showModal}>
+                  Add a group
+                </Button>
+                {error ? (
+                  <>
+                    <p className="error-text">
+                      The provided credentials are incorrect
+                    </p>
+                  </>
+                ) : null}
               </Col>
             </Row>
-           
-          ) : (null)}
 
-          <Row justify="center">
-            <Col span={4}>
-              <Button type="primary" onClick={showModal}>
-                Add a group
-              </Button>
-              {error ? (
-                <>
-                  <p className="error-text">
-                    The provided credentials are incorrect
-                  </p>
-                </>
-              ) : (null)}
-            </Col>
-          </Row>
+            <div>
+              <Modal
+                title="Add a group"
+                open={open}
+                onOk={({ target }) => {
+                  setConfirmLoading();
+                  console.log(target);
+                  handleAddGroup(target);
+                  setFormState({ groupname: "" });
+                  setOpen(false);
+                }}
+                okText="Add Group"
+                confirmLoading={confirmLoading}
+                onCancel={() => {
+                  setOpen(false);
+                }}
+              >
+                <Input
+                  placeholder="Enter your group name"
+                  className="modalInput"
+                  name="groupname"
+                  type="text"
+                  value={formState.groupname}
+                  onChange={handleChange}
+                ></Input>
+              </Modal>
+            </div>
 
-          <div>
-            <Modal
-              title="Add a group"
-              open={open}
-              onOk={({ target }) => {
-                setConfirmLoading();
-                console.log(target);
-                handleAddGroup(target);
-                setFormState({ groupname: "" });
-                setOpen(false);
-              }}
-              okText="Add Group"
-              confirmLoading={confirmLoading}
-              onCancel={() => {
-                setOpen(false);
-              }}
-            >
-              <Input
-                placeholder="Enter your group name"
-                className="modalInput"
-                name="groupname"
-                type="text"
-                value={formState.groupname}
-                onChange={handleChange}
-              ></Input>
-            </Modal>
-          </div>
-
-          <Divider />
-          <Space wrap>
-            {groups &&
-              groups.map((group) => (
-                <div className="groupCard" key={group._id}>
-                  <Link className="cardLink" to={`./${group._id}`}>
-                    <Card
-                      style={{
-                        width: 300,
-                      }}
-                      cover={
-                        <img
-                          alt="example"
-                          src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                        />
-                      }
-                      actions={[
-                        <SettingOutlined key="setting" />,
-                        <EditOutlined key="edit" />,
-                        <EllipsisOutlined key="ellipsis" />,
-                      ]}
-                    >
-                      <Meta
-                        avatar={
-                          <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+            <Divider />
+            <Space wrap>
+              {groups &&
+                groups.map((group) => (
+                  <div className="groupCard" key={group._id}>
+                    <Link className="cardLink" to={`./${group._id}`}>
+                      <Card
+                        style={{
+                          width: 300,
+                        }}
+                        cover={
+                          <img
+                            alt="example"
+                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                          />
                         }
-                        title={group.groupname}
-                      />
-                    </Card>
-                  </Link>
-                </div>
-              ))}
-          </Space>
-        </>
-      ) : (
-      
-        <Navigate to="/" replace={true}/>
-        
-      )}
-    </div>
-  );
+                        actions={[
+                          <SettingOutlined key="setting" />,
+                          <EditOutlined key="edit" />,
+                          <EllipsisOutlined key="ellipsis" />,
+                        ]}
+                      >
+                        <Meta
+                          avatar={
+                            <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+                          }
+                          title={group.groupname}
+                        />
+                      </Card>
+                    </Link>
+                  </div>
+                ))}
+            </Space>
+          </>
+        ) : (
+          <Navigate to="/" replace={true} />
+        )}
+      </div>
+    );
+  }
 };
 
 export default Groups;
