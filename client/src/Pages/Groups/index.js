@@ -56,7 +56,7 @@ const Groups = () => {
 
       setOpen(false);
       setFormState({ groupname: "" });
-      window.location.reload();
+      window.location.reload(true);
     } catch (err) {
       if (err) {
       }

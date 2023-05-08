@@ -9,7 +9,6 @@ const PageRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route path="/dashboard/" element={<Dashboard />}></Route> */}
       <Route path="/login" element={<Login />}></Route>
       <Route path="/join" element={<Join />}></Route>
       <Route path="/groups" element={<Groups />}></Route>
