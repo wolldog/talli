@@ -140,44 +140,34 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // testing
-    // addMembers: async (_, { email, groupId }) => {
-    //   const memberToGroup = await User.findAll({ email });
-    //   await Group.findOneAndUpdate(
-    //     { _id: groupId },
-    //     { $addToSet: { members: { $each: email } } },
-    //     { new: true, runValidators: true }
-    //   );
-    //   await User.updateMany(
-    //     { email: email },
-    //     { $addToSet: { groups: groupId } },
-    //     { new: true, runValidators: true }
-    //   );
-    //   return memberToGroup;
-    // },
-    // testing
-
-    addMembers: async (_, { groupId, memberId }, context) => {
-      const memberToGroup = await Group.findOneAndUpdate(
-        { _id: groupId },
-        // {
-        //   _id: "64588390dad0960d58153c8d",
-        // },
-        // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
-        { $addToSet: { members: { $each: memberId } } },
-        { new: true, runValidators: true }
-      );
-
-      await User.updateMany(
-        // when testing in apollo: {"memberId": ["id1","id2"]}
-        { _id: memberId },
-        { $addToSet: { groups: groupId } },
-        // { $addToSet: { groups: "64588390dad0960d58153c8d" } },
-        { new: true, runValidators: true }
-      );
-
-      return memberToGroup;
+    addMembers: async (_, { groupId, email }) => {
+      try {
+        // Find the user document by email
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new Error("No user found with that email");
+        }
+        // Add the user's ObjectId to the group's members array
+        const updatedGroup = await Group.findOneAndUpdate(
+          { _id: groupId },
+          { $addToSet: { members: user._id } },
+          { new: true, runValidators: true }
+        ).populate("members");
+        return updatedGroup;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
     },
+
+    //   await User.updateMany(
+    //     // when testing in apollo: {"memberId": ["id1","id2"]}
+    //     { _id: memberId },
+    //     { $addToSet: { groups: groupId } },
+    //     // { $addToSet: { groups: "64588390dad0960d58153c8d" } },
+    //     { new: true, runValidators: true }
+    //   );
+
 
     addTransactions: async (
       _,
