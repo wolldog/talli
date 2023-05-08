@@ -39,7 +39,7 @@ const resolvers = {
     me: async (parent, args, context) => {
       // checking if user is log in, if not throw error
       if (!context.user) throw new AuthenticationError("Please log in");
-      const me = User.findOne({ _id: context.user._id })
+      const me = await User.findOne({ _id: context.user._id })
         .select("-__v")
         .populate("friends")
         .populate({ path: "groupsadministrated", populate: "admin" })
@@ -55,7 +55,17 @@ const resolvers = {
     },
 
     groups: async () => {
-      const group = await Group.find({})
+      const groups = await Group.find({})
+        .select("-__v")
+        .populate("members")
+        .populate("admin")
+        .populate("transactions")
+        .populate({ path: "transactions", populate: "payer" });
+      return groups;
+    },
+
+    group: async (parent, { groupId }) => {
+      const group = await Group.findById({ _id: groupId })
         .select("-__v")
         .populate("members")
         .populate("admin")
@@ -63,17 +73,8 @@ const resolvers = {
         .populate({ path: "transactions", populate: "payer" });
       return group;
     },
-
-    group: async (parent, { groupId }) => {
-      // if ()
-      return Group.findById({ _id: groupId })
-        .select("-__v")
-        .populate("members")
-        .populate("admin")
-        .populate("transactions")
-        .populate({ path: "transactions", populate: "payer" });
-    },
   },
+
   Mutation: {
     addUser: async (_, { nickname, email, password, phone }) => {
       const user = await User.create({ nickname, email, password, phone });
@@ -92,55 +93,80 @@ const resolvers = {
     },
 
     addFriends: async (_, { friendId }, context) => {
-      // if (context.user)
-      const updatedUser = await User.findOneAndUpdate(
-        // _id = context.user._id
-        { _id: "64559787008c6e8e7a8f6901" },
-        { $addToSet: { friends: friendId } },
-        { new: true, runValidators: true }
-      );
-      return updatedUser;
+      if (context.user) {
+        const updatedFriends = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          // { _id: "64585357be0a608299a62f78" },
+          { $addToSet: { friends: friendId } },
+          { new: true, runValidators: true }
+        );
+        await User.findByIdAndUpdate(
+          { _id: friendId },
+          // {$addToSet: { friends: "64585357be0a608299a62f78" } }
+          { $addToSet: { friends: context.user._id } },
+          { new: true, runValidators: true }
+        );
+        return updatedFriends;
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
 
     addGroup: async (parent, { groupname, userId }, context) => {
-      // if (context.user) {
-      const newGroup = await Group.create({
-        groupname,
-        // admin: context.user._id,
-        admin: userId,
-      });
-      await User.findOneAndUpdate(
-        // { _id: context.user_id },
-        { _id: userId },
-        {
-          $addToSet: {
-            groupsadministrated: newGroup._id,
-            groups: newGroup._id,
+      if (context.user) {
+        const newGroup = await Group.create({
+          groupname,
+          admin: context.user._id,
+          // admin: userId,
+        });
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          // { _id: userId },
+          {
+            $addToSet: {
+              groupsadministrated: newGroup._id,
+              groups: newGroup._id,
+            },
           },
-        },
-        { new: true, runValidators: true }
-      );
-      await Group.findOneAndUpdate(
-        { _id: newGroup._id },
-        {
-          $addToSet: {
-            // members: context.user._id,
-            members: userId,
+          { new: true, runValidators: true }
+        );
+        await Group.findOneAndUpdate(
+          { _id: newGroup._id },
+          {
+            $addToSet: {
+              members: context.user._id,
+              // members: userId,
+            },
           },
-        },
-        { new: true, runValidators: true }
-      );
-      return newGroup;
-      // }
-      // throw new AuthenticationError("You need to be logged in!");
+          { new: true, runValidators: true }
+        );
+        return newGroup;
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
+    
+    // testing
+    // addMembers: async (_, { email, groupId }) => {
+    //   const memberToGroup = await User.findAll({ email });
+    //   await Group.findOneAndUpdate(
+    //     { _id: groupId },
+    //     { $addToSet: { members: { $each: email } } },
+    //     { new: true, runValidators: true }
+    //   );
+    //   await User.updateMany(
+    //     { email: email },
+    //     { $addToSet: { groups: groupId } },
+    //     { new: true, runValidators: true }
+    //   );
+    //   return memberToGroup;
+    // },
+    // testing
 
     addMembers: async (_, { groupId, memberId }, context) => {
       const memberToGroup = await Group.findOneAndUpdate(
-        // { _id:groupId}
-        {
-          _id: "64560ef297ede464a4733222",
-        },
+        { _id: groupId },
+        // {
+        //   _id: "64560ef297ede464a4733222",
+        // },
         // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
         { $addToSet: { members: { $each: memberId } } },
         { new: true, runValidators: true }
@@ -149,8 +175,8 @@ const resolvers = {
       await User.updateMany(
         // when testing in apollo: {"memberId": ["id1","id2"]}
         { _id: memberId },
-        // { $addToSet: { groups: groupId } },
-        { $addToSet: { groups: "64560ef297ede464a4733222" } },
+        { $addToSet: { groups: groupId } },
+        // { $addToSet: { groups: "64560ef297ede464a4733222" } },
         { new: true, runValidators: true }
       );
 
@@ -163,15 +189,15 @@ const resolvers = {
       context
     ) => {
       const newTransaction = await Group.findOneAndUpdate(
-        // { _id: groupId },
-        { _id: "64575b6ed52dde2f7d54d9cc" },
+        { _id: groupId },
+        // { _id: "64575b6ed52dde2f7d54d9cc" },
         {
           $addToSet: {
             transactions: {
               transactionname,
               description,
-              // payer: context.user._id,
-              payer: "6455c6b978f8093dea6919b5",
+              payer: context.user._id,
+              // payer: "6455c6b978f8093dea6919b5",
               amountpaid,
               attachment,
             },
@@ -188,8 +214,8 @@ const resolvers = {
         _id: groupId,
       });
       await User.findOneAndUpdate(
-        // { _id: context.user._id },
-        { _id: "64559787008c6e8e7a8f6901" },
+        { _id: context.user._id },
+        // { _id: "64559787008c6e8e7a8f6901" },
         { $pull: { groupsadministrated: groupId, groups: groupId } }
       );
 
