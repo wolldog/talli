@@ -6,7 +6,6 @@ const typeDefs = gql`
     nickname: String
     email: String
     phone: String
-    groupsadministrated: [Group]
     groups: [Group]
     friends: [User]
   }
@@ -23,6 +22,7 @@ const typeDefs = gql`
 
   type Transaction {
     _id: ID!
+    group: Group
     transactionname: String
     description: String
     payer: User
@@ -40,8 +40,8 @@ const typeDefs = gql`
     me: User
     users: [User]
     user(nickname: String): User
-    groups: [Group]
     group(groupId: ID!): Group
+    groups(userId: ID): [Group]
   }
 
   type Mutation {
@@ -67,5 +67,6 @@ const typeDefs = gql`
   }
 `;
 //     addMembers(email: [String], groupId: ID): Group
+//  groups: [Group]
 
 module.exports = typeDefs;

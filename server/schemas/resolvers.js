@@ -8,7 +8,6 @@ const resolvers = {
       const users = await User.find({})
         .select("-__v")
         .populate("friends")
-        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate({
           path: "groups",
           populate: [
@@ -24,7 +23,6 @@ const resolvers = {
       const user = await User.findOne({ nickname })
         .select("-__v")
         .populate("friends")
-        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate({
           path: "groups",
           populate: [
@@ -42,7 +40,6 @@ const resolvers = {
       const me = await User.findOne({ _id: context.user._id })
         .select("-__v")
         .populate("friends")
-        .populate({ path: "groupsadministrated", populate: "admin" })
         .populate({
           path: "groups",
           populate: [
@@ -123,7 +120,6 @@ const resolvers = {
           // { _id: userId },
           {
             $addToSet: {
-              groupsadministrated: newGroup._id,
               groups: newGroup._id,
             },
           },
@@ -143,7 +139,7 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-    
+
     // testing
     // addMembers: async (_, { email, groupId }) => {
     //   const memberToGroup = await User.findAll({ email });
@@ -165,7 +161,7 @@ const resolvers = {
       const memberToGroup = await Group.findOneAndUpdate(
         { _id: groupId },
         // {
-        //   _id: "64560ef297ede464a4733222",
+        //   _id: "64588390dad0960d58153c8d",
         // },
         // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
         { $addToSet: { members: { $each: memberId } } },
@@ -176,7 +172,7 @@ const resolvers = {
         // when testing in apollo: {"memberId": ["id1","id2"]}
         { _id: memberId },
         { $addToSet: { groups: groupId } },
-        // { $addToSet: { groups: "64560ef297ede464a4733222" } },
+        // { $addToSet: { groups: "64588390dad0960d58153c8d" } },
         { new: true, runValidators: true }
       );
 
@@ -216,7 +212,7 @@ const resolvers = {
       await User.findOneAndUpdate(
         { _id: context.user._id },
         // { _id: "64559787008c6e8e7a8f6901" },
-        { $pull: { groupsadministrated: groupId, groups: groupId } }
+        { $pull: { groups: groupId } }
       );
 
       return groupRemoved;

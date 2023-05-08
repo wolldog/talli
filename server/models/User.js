@@ -43,12 +43,6 @@ const userSchema = new Schema(
         ref: "Group",
       },
     ],
-    groupsadministrated: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Group",
-      },
-    ],
     paymentsmade: [
       {
         transactionId: {
