@@ -153,6 +153,11 @@ const resolvers = {
           { $addToSet: { members: user._id } },
           { new: true, runValidators: true }
         ).populate("members");
+        await User.findOneAndUpdate(
+          { _id: user._id },
+          { $addToSet: { groups: groupId } },
+          { new: true, runValidators: true }
+        );
         return updatedGroup;
       } catch (err) {
         console.log(err);
@@ -167,7 +172,6 @@ const resolvers = {
     //     // { $addToSet: { groups: "64588390dad0960d58153c8d" } },
     //     { new: true, runValidators: true }
     //   );
-
 
     addTransactions: async (
       _,
