@@ -11,7 +11,7 @@ import "./App.css";
 import { Space} from "antd";
 
 import PageHeader from "./components/PageHeader";
-import PageConent from "./components/PageContent";
+import PageContent from "./components/PageContent";
 
 
 
@@ -45,7 +45,7 @@ function App() {
     <ApolloProvider client={client}>
      <PageHeader />
       <Space className="main">
-        <PageConent></PageConent>
+        <PageContent></PageContent>
       </Space>
     </ApolloProvider>
     </div>

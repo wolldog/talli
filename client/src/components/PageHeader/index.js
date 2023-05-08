@@ -7,7 +7,7 @@ import Auth from "../../utils/auth.js";
 
 const PageHeader = () => {
   const navigate = useNavigate();
-  console.log(Auth.nickname);
+ 
 
   const logout = (event) => {
     Auth.logout();

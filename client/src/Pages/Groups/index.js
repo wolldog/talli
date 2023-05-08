@@ -21,19 +21,19 @@ import {
   Typography,
 } from "antd";
 
-import { QUERY_USERS_GROUPS } from "../../utils/queries.js";
+import { QUERY_ME } from "../../utils/queries.js";
 import { ADD_GROUP } from "../../utils/mutations.js";
 
 const { Meta } = Card;
 
 const Groups = () => {
   //Retrieve the groups the currently logged in user belongs to
-  const { loading, data } = useQuery(QUERY_USERS_GROUPS);
+  const { loading, data } = useQuery(QUERY_ME);
 
   //Declare variable 'groups' to hold retrieved data.
   // const [groups, setGroups] = useState(data.groups)
 
-  const groups = data?.groups || [];
+  const groups = data?.me.groups || [];
 
   //console.log(groups);
 
