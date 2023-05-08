@@ -164,9 +164,9 @@ const resolvers = {
     addMembers: async (_, { groupId, memberId }, context) => {
       const memberToGroup = await Group.findOneAndUpdate(
         { _id: groupId },
-        {
-          _id: "64560ef297ede464a4733222",
-        },
+        // {
+        //   _id: "64560ef297ede464a4733222",
+        // },
         // { $addToSet: { members:{$each}: memberId } }, //to add more than 1 member at a time
         { $addToSet: { members: { $each: memberId } } },
         { new: true, runValidators: true }
