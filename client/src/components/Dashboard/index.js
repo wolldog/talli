@@ -1,36 +1,34 @@
 
 import { Link } from "react-router-dom";
-import DashboardImage from "../../assets/images/TalliDashboard.png"
+import { useQuery } from '@apollo/client';
 
+import DashboardImage from "../../assets/images/TalliDashboard.png"
+import GroupImage from "../../assets/images/groups.png"
+import FriendsImage from "../../assets/images/friends1.png"
+import TransImage from "../../assets/images/transactions.png"
+import Auth from "../../utils/auth.js";
 
 import {
-  Avatar,
   Card,
   Space,
-  Divider,
   Button,
-  Row,
-  Col,
-  Modal,
-  Input,
   Typography,
-  List,
-} from "antd";
+ } from "antd";
 
+import { QUERY_ME } from "../../utils/queries.js"
 
+const Dashboard = () => {
 
-const Dashboard = ({groups, friends, me}) => {
+const { Meta } = Card;
 
-  console.log(me)
+const { loading, data } = useQuery(QUERY_ME);
+const me = data?.me || {};
 
-  const { Meta } = Card;
-   
-  
 
     return (
         <div>
-           <Typography.Title>My Dashboard</Typography.Title>
-          <Button href="./groups">Groups</Button>
+           {/* <Typography.Title>My Dashboard</Typography.Title>
+          <Button href="./groups">Groups</Button> */}
             <Space>
               <Link to={"/groups"}>
                 <Card
@@ -38,7 +36,7 @@ const Dashboard = ({groups, friends, me}) => {
                 style={{
                 width: 240,
                 }}
-                cover={<img alt="example" src={DashboardImage} />}
+                cover={<img alt="example" src={GroupImage} />}
                 >
                 <Meta title="My Groups" />
                 </Card>
@@ -51,11 +49,24 @@ const Dashboard = ({groups, friends, me}) => {
                   style={{
                   width: 240,
                   }}
-                  cover={<img alt="example" src={DashboardImage} />}
+                  cover={<img alt="example" src={FriendsImage} />}
                 >
-                <Meta title="Me" />
+                <Meta title="My Friends" />
                 </Card>
               </Link>
+
+              <Link>
+                <Card
+                  hoverable
+                  style={{
+                  width: 240,
+                  }}
+                  cover={<img alt="example" src={TransImage} />}
+                >
+                <Meta title="My Transactions" />
+                </Card>
+              </Link>
+
 
               <Card
                   hoverable
