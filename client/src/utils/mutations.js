@@ -30,9 +30,17 @@ export const ADD_USER = gql`
 export const ADD_GROUP = gql`
 mutation AddGroup($groupname: String) {
   addGroup(groupname: $groupname) {
-    groupname
     _id
-    admin
+    admin {
+      _id
+      nickname
+    }
+    groupname
+    members {
+      _id
+      nickname
+      email
+    }
   }
 }
 `;

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
+
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -27,15 +28,20 @@ import { ADD_GROUP } from "../../utils/mutations.js";
 const { Meta } = Card;
 
 const Groups = () => {
+
   //Retrieve the groups the currently logged in user belongs to
   const { loading, data } = useQuery(QUERY_ME);
 
   //Declare variable 'groups' to hold retrieved data.
   // const [groups, setGroups] = useState(data.groups)
 
+  const me = data.me || {};
+
+  console.log(me)
+
   const groups = data?.me.groups || [];
 
-  //console.log(groups);
+  console.log(groups);
 
   const [addGroup, { error }] = useMutation(ADD_GROUP);
 
@@ -48,8 +54,10 @@ const Groups = () => {
       // if(data?.addGroup){
       //   setGroups(prev => [...prev, data.addGroup])
       // }
+
       setOpen(false);
       setFormState({ groupname: "" });
+
     } catch (err) {
       if (err) {
       }
@@ -85,16 +93,22 @@ const Groups = () => {
   }
 
   return (
+
     <div className="groups">
+      
       {Auth.loggedIn() ? (
+
+
         <>
-          {groups.length === 0 ? (
+          {groups.length === 0 ? ( 
+            
             <Row justify="center">
               <Col span={24}>
                 <Typography.Title>Create a group to begin </Typography.Title>
               </Col>
             </Row>
-          ) : null}
+           
+          ) : (null)}
 
           <Row justify="center">
             <Col span={4}>
@@ -102,12 +116,12 @@ const Groups = () => {
                 Add a group
               </Button>
               {error ? (
-                <div>
+                <>
                   <p className="error-text">
                     The provided credentials are incorrect
                   </p>
-                </div>
-              ) : null}
+                </>
+              ) : (null)}
             </Col>
           </Row>
 

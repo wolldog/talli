@@ -1,18 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_USERS_GROUPS = gql`
-query Groups {
-  groups {
-    groupname
-    _id
-    admin {
-      _id
-      nickname
-    }
-  }
-}
-`;
-
 export const QUERY_SINGLE_GROUP = gql`
 query Group($groupId: ID!) {
   group(groupId: $groupId) {
@@ -45,7 +32,6 @@ query Me {
       _id
       admin {
         _id
-        nickname
       }
       groupname
       members {

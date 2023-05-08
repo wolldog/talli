@@ -8,10 +8,12 @@ import { useQuery } from "@apollo/client";
 import { QUERY_SINGLE_GROUP } from "../../utils/queries";
 
 import MemberList from "../../components/MemberList";
+import MemberForm from "../../components/MemberForm";
 
 import FriendList from "../../components/FriendList";
 
 const SingleGroup = () => {
+  
   const { groupId } = useParams();
 
   const { loading, data } = useQuery(QUERY_SINGLE_GROUP, {
@@ -32,7 +34,12 @@ const SingleGroup = () => {
         <div className="MemberList">
           <MemberList members={group.members} />
         </div>
+        <div>
+          <MemberForm groupId={group._id} />
+        </div>
+        <div>
         <FriendList />
+        </div>
       </Space>
     </div>
   );
