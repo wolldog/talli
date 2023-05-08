@@ -5,7 +5,10 @@ query Groups {
   groups {
     groupname
     _id
-    admin
+    admin {
+      _id
+      nickname
+    }
   }
 }
 `;

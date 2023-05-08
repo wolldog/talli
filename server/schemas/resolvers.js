@@ -8,9 +8,7 @@ const resolvers = {
       const users = await User.find({})
         .select("-__v")
         .populate("friends")
-        .populate("groupsadministrated")
         .populate({ path: "groupsadministrated", populate: "admin" })
-        .populate("groups")
         .populate({
           path: "groups",
           populate: [
@@ -26,9 +24,7 @@ const resolvers = {
       const user = await User.findOne({ nickname })
         .select("-__v")
         .populate("friends")
-        .populate("groupsadministrated")
         .populate({ path: "groupsadministrated", populate: "admin" })
-        .populate("groups")
         .populate({
           path: "groups",
           populate: [
@@ -46,9 +42,7 @@ const resolvers = {
       const me = User.findOne({ _id: context.user._id })
         .select("-__v")
         .populate("friends")
-        .populate("groupsadministrated")
         .populate({ path: "groupsadministrated", populate: "admin" })
-        .populate("groups")
         .populate({
           path: "groups",
           populate: [
@@ -117,7 +111,7 @@ const resolvers = {
       });
       await User.findOneAndUpdate(
         // { _id: context.user_id },
-        { _id: "6455c6b978f8093dea6919b5" },
+        { _id: userId },
         {
           $addToSet: {
             groupsadministrated: newGroup._id,
@@ -131,12 +125,14 @@ const resolvers = {
         {
           $addToSet: {
             // members: context.user._id,
-            members: "6455ad1aeabe9f7924d3801e",
+            members: userId,
           },
         },
         { new: true, runValidators: true }
       );
       return newGroup;
+      // }
+      // throw new AuthenticationError("You need to be logged in!");
     },
 
     addMembers: async (_, { groupId, memberId }, context) => {
