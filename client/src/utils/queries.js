@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-
 export const QUERY_SINGLE_GROUP = gql`
 query Group($groupId: ID!) {
   group(groupId: $groupId) {
