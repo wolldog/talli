@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
@@ -29,7 +29,10 @@ const { Meta } = Card;
 
 const Groups = () => {
   //Retrieve the groups the currently logged in user belongs to
-  const { loading, data } = useQuery(QUERY_ME);
+  // const { loading, data, refetch} = useQuery(QUERY_ME);
+let isActivated = false
+const { loading, data, refetch } = useQuery(QUERY_ME);
+useEffect(() => { refetch() }, [isActivated])
 
   //Declare variable 'groups' to hold retrieved data.
   // const [groups, setGroups] = useState(data.groups)
@@ -49,14 +52,11 @@ const Groups = () => {
       const { data } = await addGroup({
         variables: { ...formState },
       });
-
-      // if(data?.addGroup){
-      //   setGroups(prev => [...prev, data.addGroup])
-      // }
-
+  
       setOpen(false);
       setFormState({ groupname: "" });
-      window.location.reload(true);
+      isActivated = !isActivated;
+      refetch();
     } catch (err) {
       if (err) {
       }
