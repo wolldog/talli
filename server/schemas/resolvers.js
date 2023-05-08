@@ -165,29 +165,21 @@ const resolvers = {
       }
     },
 
-    //   await User.updateMany(
-    //     // when testing in apollo: {"memberId": ["id1","id2"]}
-    //     { _id: memberId },
-    //     { $addToSet: { groups: groupId } },
-    //     // { $addToSet: { groups: "64588390dad0960d58153c8d" } },
-    //     { new: true, runValidators: true }
-    //   );
-
     addTransactions: async (
       _,
       { groupId, transactionname, description, amountpaid, attachment },
       context
     ) => {
       const newTransaction = await Group.findOneAndUpdate(
+        // { _id: "6458536cbe0a608299a62f7b" },
         { _id: groupId },
-        // { _id: "64575b6ed52dde2f7d54d9cc" },
         {
           $addToSet: {
             transactions: {
               transactionname,
               description,
               payer: context.user._id,
-              // payer: "6455c6b978f8093dea6919b5",
+              // payer: "64575b6ed52dde2f7d54d9cc",
               amountpaid,
               attachment,
             },
