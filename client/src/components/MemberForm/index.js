@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 
 import {
-    Avatar,
-    Card,
-    Space,
-    Divider,
-    Button,
-    Row,
-    Col,
-    Modal,
-    Input,
-    Typography,
-    Form
-  } from "antd";
+  Avatar,
+  Card,
+  Space,
+  Divider,
+  Button,
+  Row,
+  Col,
+  Modal,
+  Input,
+  Typography,
+  Form,
+} from "antd";
 
+import { ADD_MEMBER } from "../../utils/mutations";
 
-import { ADD_MEMBER } from '../../utils/mutations';
-
-import Auth from '../../utils/auth';
+import Auth from "../../utils/auth";
 
 const MemberForm = ({ groupId }) => {
+  const [newMember, setNewMember] = useState("");
 
-    const [newMember, setNewMember] = useState('');
+  const [addMember, { error }] = useMutation(ADD_MEMBER);
 
-    const [addMember, { error }] = useMutation(ADD_MEMBER);
+  const onFinish = async ({ email }) => {
+    console.log(email);
+    // console.log(newMember, groupId);
 
-    const onFinish = async (newMember) => {
+    try {
+      const { data } = await addMember({
+        variables: {
+          groupId,
+          email,
+        },
+      });
 
-      console.log(newMember, groupId)
-        
-        try {
-          const { data } = await addMember({
-            variables: {
-                groupId,
-                newMember,
-            },
-          });
-
-          setNewMember('');
+      setNewMember("");
     } catch (err) {
       console.error(err);
     }
@@ -48,63 +46,62 @@ const MemberForm = ({ groupId }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    if (name === 'newMember') {
+    if (name === "newMember") {
       setNewMember(value);
     }
   };
 
-//   const onFinish = (values) => {
-//     console.log('Success:', values);
-//   };
+  //   const onFinish = (values) => {
+  //     console.log('Success:', values);
+  //   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <div>
-<Form
-    name="basic"
-    labelCol={{
-      span: 8,
-    }}
-    wrapperCol={{
-      span: 16,
-    }}
-    style={{
-      maxWidth: 600,
-    }}
-    
-    onChange={handleChange}
-    onFinish={onFinish}
-    // onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-    <Form.Item
-      label="Email"
-      name="email"
-      rules={[
-        {
-          required: true,
-          message: 'Please input your email!',
-        },
-      ]}
-    >
-      <Input />
-    </Form.Item>
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        style={{
+          maxWidth: 600,
+        }}
+        onChange={handleChange}
+        onFinish={onFinish}
+        // onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input your email!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-    <Form.Item
-      wrapperCol={{
-        offset: 8,
-        span: 16,
-      }}
-    >
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item>
-  </Form>
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
-  )
+  );
 };
 
 export default MemberForm;

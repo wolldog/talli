@@ -66,7 +66,5 @@ const typeDefs = gql`
     removeGroup(groupId: ID!): Group
   }
 `;
-//     addMembers(email: [String], groupId: ID): Group
-//  groups: [Group]
 
 module.exports = typeDefs;
