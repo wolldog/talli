@@ -44,9 +44,9 @@ function App() {
     <div className="App">
     <ApolloProvider client={client}>
      <PageHeader />
-      <Space className="main">
+
         <PageContent></PageContent>
-      </Space>
+
     </ApolloProvider>
     </div>
   );

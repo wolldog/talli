@@ -57,6 +57,7 @@ const typeDefs = gql`
     addGroup(groupname: String, userId: ID): Group
     addMembers(email: String, groupId: ID): Group
     addTransactions(
+      groupId: ID
       transactionname: String
       description: String
       payer: ID

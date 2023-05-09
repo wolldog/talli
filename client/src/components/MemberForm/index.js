@@ -70,7 +70,9 @@ const MemberForm = ({ groupId }) => {
         }}
         style={{
           maxWidth: 600,
+          margin: "auto"
         }}
+        layout="vertical"
         onChange={handleChange}
         onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
