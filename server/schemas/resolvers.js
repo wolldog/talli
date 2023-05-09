@@ -167,11 +167,11 @@ const resolvers = {
 
     addTransactions: async (
       _,
-      { groupId, transactionname, description, amountpaid, attachment },
+      { groupId, transactionname, description, amountpaid, attachment, date },
       context
     ) => {
       const newTransaction = await Group.findOneAndUpdate(
-        // { _id: "6458536cbe0a608299a62f7b" },
+        // { _id: "6459a822ba66987c4fb711cb" },
         { _id: groupId },
         {
           $addToSet: {
@@ -179,11 +179,11 @@ const resolvers = {
               transactionname,
               description,
               payer: context.user._id,
-              // payer: "64575b6ed52dde2f7d54d9cc",
+              // payer: "64586500ac940b612c19b661",
               amountpaid,
               attachment,
             },
-            groupdebit: amountpaid,
+            groupexpenses: amountpaid,
           },
         },
         { new: true, runValidators: true }
