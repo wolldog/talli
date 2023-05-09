@@ -48,16 +48,11 @@ const groupSchema = new Schema(
       },
     ],
     // membersPayments
-    groupdebit: [
+    groupexpenses: [
       {
         type: Number,
       },
     ],
-    // {
-    //   userId: { type: String },
-    //   amountpaid: { type: Number },
-    // },
-    // totalGroupCoast--> [all the individual expenses]
     groupcredit: [
       {
         type: Number,
@@ -72,10 +67,16 @@ const groupSchema = new Schema(
   }
 );
 
-// when we query a group, we'll also get another field called `membersCount` with the number of users that joined the group
-// groupSchema.virtual("membersCount").get(function () {
-//   return this.members.length;
-// });
+// when we query a group, we'll also get another field called `totalgroupexpenses` with the total expense of the group
+groupSchema.virtual("totalgroupexpenses").get(function () {
+  let expenses = this.groupexpenses;
+  let expensesSum = 0;
+  for (let i = 0; i < expenses.length; i++) {
+    expensesSum += expenses[i];
+  }
+  console.log(expensesSum);
+  return expensesSum;
+});
 
 const Group = model("Group", groupSchema);
 

@@ -16,7 +16,8 @@ const typeDefs = gql`
     groupname: String
     members: [User]
     transactions: [Transaction]
-    groupdebit: [Float]
+    groupexpenses: [Float]
+    totalgroupexpenses: Float
     groupcredit: [Float]
   }
 
@@ -57,10 +58,12 @@ const typeDefs = gql`
     addGroup(groupname: String, userId: ID): Group
     addMembers(email: String, groupId: ID): Group
     addTransactions(
+      groupId: ID
       transactionname: String
       description: String
       payer: ID
       amountpaid: Float
+      date: String
       attachment: String
     ): Group
     removeGroup(groupId: ID!): Group
