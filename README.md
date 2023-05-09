@@ -1,6 +1,8 @@
 # Talli
 
-Talli is a MERN stack single-page application created to: manage, keep record and split expenses with your friends.
+Talli is a MERN stack single-page application created to:
+
+Manage, keep record and split expenses with your friends.
 Add bills and keep track of the payers.
 Use the information to settle the expenses with your group friends.
 
