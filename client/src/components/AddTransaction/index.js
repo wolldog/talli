@@ -33,7 +33,7 @@ const AddTransactionForm = ({ groupId }) => {
   const [formState, setFormState] = useState({
     transactionname: '',
     description: '',
-    amountpaid: '',
+    // amountpaid: '',
     attachment: '',
   });
   
@@ -114,7 +114,7 @@ const AddTransactionForm = ({ groupId }) => {
       <Form.Item
         name="amountpaid"
         label="Amount paid"
-        rules={[{ required: true, message: 'Please input amount paid!' }]}
+        // rules={[{ required: true, message: 'Please input amount paid!' }]}
       >
         <Input style={{ width: '100%' }} 
                   className="form-input"
