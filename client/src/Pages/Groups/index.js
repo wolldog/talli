@@ -2,6 +2,7 @@ import { useState, useEffect} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
+import GroupDefault from "../../assets/images/groups.png"
 
 import {
   EditOutlined,
@@ -28,26 +29,19 @@ import { ADD_GROUP } from "../../utils/mutations.js";
 const { Meta } = Card;
 
 const Groups = () => {
-  //Retrieve the groups the currently logged in user belongs to
-  // const { loading, data, refetch} = useQuery(QUERY_ME);
+
 let isActivated = false
+
 const { loading, data, refetch } = useQuery(QUERY_ME);
 useEffect(() => { refetch() }, [isActivated])
 
-  //Declare variable 'groups' to hold retrieved data.
-  // const [groups, setGroups] = useState(data.groups)
+const groups = data?.me.groups || [];
 
-  // const me = data.me || {};
 
-  // console.log(me);
 
-  const groups = data?.me.groups || [];
+const [addGroup, { error }] = useMutation(ADD_GROUP);
 
-  // console.log(groups);
-
-  const [addGroup, { error }] = useMutation(ADD_GROUP);
-
-  const handleAddGroup = async () => {
+const handleAddGroup = async () => {
     try {
       const { data } = await addGroup({
         variables: { ...formState },
@@ -158,7 +152,8 @@ useEffect(() => { refetch() }, [isActivated])
                         cover={
                           <img
                             alt="example"
-                            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                            src={GroupDefault}
+
                           />
                         }
                         actions={[

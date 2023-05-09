@@ -14,22 +14,9 @@
   justify-content: space-around;
 }
 
-.main {
-  display: flex;
-  flex: 1;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
 
 .PageContent {
   padding: 40px;
-  display: flex;
-  flex: 1;
-  justify-content: flex-start;
-  align-items: flex-start;
 }
 
-.SideMenu {
-  padding: 10px;
-}
 

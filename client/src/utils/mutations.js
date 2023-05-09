@@ -46,7 +46,7 @@ export const ADD_GROUP = gql`
 `;
 
 export const ADD_MEMBER = gql`
-  mutation Mutation($email: String, $groupId: ID) {
+  mutation AddMember($email: String, $groupId: ID) {
     addMembers(email: $email, groupId: $groupId) {
       members {
         nickname
@@ -55,4 +55,17 @@ export const ADD_MEMBER = gql`
       }
     }
   }
+`;
+
+export const ADD_TRANSACTION = gql `
+mutation AddTransactions($groupId: ID, $transactionname: String, $description: String, $amountpaid: Float, $attachment: String) {
+  addTransactions(groupId: $groupId, transactionname: $transactionname, description: $description, amountpaid: $amountpaid, attachment: $attachment) {
+    transactions {
+      _id
+      transactionname
+      amountpaid
+    }
+  }
+}
+
 `;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Typography } from "antd";
+import { Space, Typography, Row, Col } from "antd";
 
 // Import the `useParams()` hook
 import { useParams } from "react-router-dom";
@@ -9,11 +9,11 @@ import { QUERY_SINGLE_GROUP } from "../../utils/queries";
 
 import MemberList from "../../components/MemberList";
 import MemberForm from "../../components/MemberForm";
+import AddTransactionForm from "../../components/AddTransaction";
 
 import FriendList from "../../components/FriendList";
 
 const SingleGroup = () => {
-  
   const { groupId } = useParams();
 
   const { loading, data } = useQuery(QUERY_SINGLE_GROUP, {
@@ -29,18 +29,25 @@ const SingleGroup = () => {
 
   return (
     <div>
-      <Typography.Title>{group.groupname}</Typography.Title>
-      <Space>
-        <div className="MemberList">
+      <Row>
+        <Col span={24}>
+          <Typography.Title>{group.groupname}</Typography.Title>
+        </Col>
+      </Row>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 50 }}>
+        <Col span={12}>
+          <div className="transactionForm">
+            <AddTransactionForm groupId={groupId}/>
+          </div>
+        </Col>
+        <Col span={12}>
+          <MemberForm groupId={groupId} />
           <MemberList members={group.members} />
-        </div>
-        <div>
-          <MemberForm groupId={group._id} />
-        </div>
-        <div>
+          {/* <div>
         <FriendList />
-        </div>
-      </Space>
+        </div> */}
+        </Col>
+      </Row>
     </div>
   );
 };

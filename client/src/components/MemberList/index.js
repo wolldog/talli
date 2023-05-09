@@ -24,20 +24,15 @@ const MemberList = ({ members = [] }) => {
   }
 
   return (
-    <div className="memberList" style={{ width: 500 }}>
+    <div className="memberList" style={{ width: 350, margin: "auto" }}>
       <List
         size="large"
         header={<div>Group Members</div>}
-        // footer={
-        //   <div>
-        //     <Button>Add Member</Button>
-        //   </div>
-        // }
         dataSource={members}
         bordered={true}
         renderItem={(item, index) => (
           <List.Item
-            actions={[<a key="list-loadmore-edit">Remove from group</a>]}
+            actions={[<a key="remove">Remove</a>]}
           >
             <List.Item.Meta
               avatar={
@@ -45,7 +40,7 @@ const MemberList = ({ members = [] }) => {
                   src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                 />
               }
-              title={<a href="https://ant.design">{item.nickname}</a>}
+              title={item.nickname}
               description={item.email}
             />
           </List.Item>
