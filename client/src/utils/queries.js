@@ -14,8 +14,18 @@ export const QUERY_SINGLE_GROUP = gql`
         email
         phone
       }
+      transactions {
+        transactionname
+        payer {
+          nickname
+        }
+        amountpaid
+      }
+      totalgroupexpenses
     }
   }
+  
+
 `;
 
 export const QUERY_ME = gql`
@@ -45,3 +55,4 @@ export const QUERY_ME = gql`
     }
   }
 `;
+

@@ -1,5 +1,5 @@
 import React from "react";
-import { Space, Typography, Row, Col } from "antd";
+import { Space, Typography, Row, Col, Card } from "antd";
 
 // Import the `useParams()` hook
 import { useParams } from "react-router-dom";
@@ -9,9 +9,11 @@ import { QUERY_SINGLE_GROUP } from "../../utils/queries";
 
 import MemberList from "../../components/MemberList";
 import MemberForm from "../../components/MemberForm";
+import TransactionList from "../../components/TransactionList";
 import AddTransactionForm from "../../components/AddTransaction";
 
 import FriendList from "../../components/FriendList";
+import { GroupSizeContext } from "antd/es/button/button-group";
 
 const SingleGroup = () => {
   const { groupId } = useParams();
@@ -41,8 +43,18 @@ const SingleGroup = () => {
           </div>
         </Col>
         <Col span={12}>
+        <Card
+      title="Groups Total Expenses"
+      style={{
+        width: 300,
+      }}
+    >
+      <Typography>{group.totalgroupexpenses}</Typography>
+    </Card>
           <MemberForm groupId={groupId} />
           <MemberList members={group.members} />
+          <TransactionList transactions = {group.transactions} />
+          
           {/* <div>
         <FriendList />
         </div> */}
