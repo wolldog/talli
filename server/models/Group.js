@@ -47,11 +47,17 @@ const groupSchema = new Schema(
         },
       },
     ],
+    // membersPayments
     groupdebit: [
       {
         type: Number,
       },
     ],
+    // {
+    //   userId: { type: String },
+    //   amountpaid: { type: Number },
+    // },
+    // totalGroupCoast--> [all the individual expenses]
     groupcredit: [
       {
         type: Number,
