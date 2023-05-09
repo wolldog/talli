@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Space, Typography, Row, Col, Card } from "antd";
+import { Typography, Row, Col, Card } from "antd";
 
 // Import the `useParams()` hook
 import { useParams } from "react-router-dom";
@@ -12,8 +12,6 @@ import MemberForm from "../../components/MemberForm";
 import TransactionList from "../../components/TransactionList";
 import AddTransactionForm from "../../components/AddTransaction";
 
-import FriendList from "../../components/FriendList";
-import { GroupSizeContext } from "antd/es/button/button-group";
 const style = {
   groupPage: {
     display: "flex",
@@ -49,9 +47,9 @@ const SingleGroup = () => {
   const group = data?.group || {};
 
   const updateActivated = () => {
-    isActivated = !isActivated
-    refetch()
-  }
+    isActivated = !isActivated;
+    refetch();
+  };
 
   if (loading) {
     return <div>Loading...</div>;

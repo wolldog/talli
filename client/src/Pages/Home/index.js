@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Auth from "../../utils/auth.js";
 
-import { Card, Space, Typography, Button } from "antd";
+import { Layout, Space, Typography, Button } from "antd";
 
 import HomeImage from "../../assets/images/TalliHome.png";
 import Dashboard from "../../components/Dashboard/index.js";
+
+const { Content } = Layout;
 
 const Home = () => {
   const navigate = useNavigate();
@@ -43,11 +45,17 @@ const Home = () => {
             </Space>
           </div>
 
-          <Typography.Title style={{ color: "(var--green)" }}>
+          <Typography.Title style={{textAlign: "center", color: "var(--green)"}}>
             How it works!
           </Typography.Title>
 
-          <img src={HomeImage} fluid></img>
+          <Layout>
+            <Content>
+              <img src={HomeImage}></img>
+            </Content>
+          </Layout>
+
+          
         </>
       )}
     </div>

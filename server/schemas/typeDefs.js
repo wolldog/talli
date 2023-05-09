@@ -62,7 +62,7 @@ const typeDefs = gql`
       transactionname: String
       description: String
       payer: ID
-      amountpaid: Float
+      amountpaid: String
       date: String
       attachment: String
     ): Group

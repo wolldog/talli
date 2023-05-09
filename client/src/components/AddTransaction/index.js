@@ -1,22 +1,11 @@
+//Import dependencies from react, apollo/client, antd, utils/mutations
 import { PlusOutlined } from "@ant-design/icons";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { ADD_TRANSACTION } from "../../utils/mutations.js";
-import {
-  Button,
-  Cascader,
-  Checkbox,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Select,
-  Switch,
-  TreeSelect,
-  Upload,
-} from "antd";
+import { Button, DatePicker, Form, Input, Radio, Upload } from "antd";
 
+//declare antd variables
 const { TextArea } = Input;
 
 const normFile = (e) => {
@@ -26,11 +15,12 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
+//AddTransactionForm function; props 'groupId' and 'gofetch' from Page/SingleGroup
 const AddTransactionForm = ({ groupId, gofetch }) => {
   const [formState, setFormState] = useState({
     transactionname: "",
     description: "",
-    // amountpaid: '',
+    amountpaid: '',
     attachment: "",
   });
 
@@ -38,7 +28,6 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setFormState({
       ...formState,
       [name]: value,
@@ -46,15 +35,13 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
   };
 
   const onFinish = async (event) => {
-    // event.preventDefault();
-
     console.log(formState, groupId);
 
     try {
       const { data } = await addTransaction({
         variables: { ...formState, groupId },
       });
-      gofetch()
+      gofetch();
     } catch (e) {
       console.error(e);
     }
@@ -80,7 +67,6 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
         },
       }}
     >
-      {" "}
       <h2>Transaction Form</h2>
       <Form.Item label="Transaction type">
         <Radio.Group>
