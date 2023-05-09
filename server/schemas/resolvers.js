@@ -88,18 +88,17 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-
+// not implemented at at front end yet.
     addFriends: async (_, { friendId }, context) => {
       if (context.user) {
         const updatedFriends = await User.findOneAndUpdate(
           { _id: context.user._id },
-          // { _id: "64585357be0a608299a62f78" },
+
           { $addToSet: { friends: friendId } },
           { new: true, runValidators: true }
         );
         await User.findByIdAndUpdate(
           { _id: friendId },
-          // {$addToSet: { friends: "64585357be0a608299a62f78" } }
           { $addToSet: { friends: context.user._id } },
           { new: true, runValidators: true }
         );
@@ -113,11 +112,9 @@ const resolvers = {
         const newGroup = await Group.create({
           groupname,
           admin: context.user._id,
-          // admin: userId,
         });
         await User.findOneAndUpdate(
           { _id: context.user._id },
-          // { _id: userId },
           {
             $addToSet: {
               groups: newGroup._id,
@@ -130,7 +127,6 @@ const resolvers = {
           {
             $addToSet: {
               members: context.user._id,
-              // members: userId,
             },
           },
           { new: true, runValidators: true }
@@ -167,11 +163,20 @@ const resolvers = {
 
     addTransactions: async (
       _,
-      { groupId, transactionname, description, amountpaid, attachment, date },
+      {
+        groupId,
+        transactionname,
+        description,
+        amountpaid,
+        attachment,
+        payer,
+        date,
+      },
       context
     ) => {
+      // new transaction is not implemented at front end yet. Bug when user is passing amountpaid
+      // const parsedAmount = parseFloat(amountpaid.toFixed(2));
       const newTransaction = await Group.findOneAndUpdate(
-        // { _id: "6459a822ba66987c4fb711cb" },
         { _id: groupId },
         {
           $addToSet: {
@@ -179,7 +184,7 @@ const resolvers = {
               transactionname,
               description,
               payer: context.user._id,
-              // payer: "64586500ac940b612c19b661",
+              payer,
               amountpaid,
               attachment,
             },
@@ -190,14 +195,13 @@ const resolvers = {
       );
       return newTransaction;
     },
-
+// not implemented at at front end yet.
     removeGroup: async (parent, { groupId }, context) => {
       const groupRemoved = await Group.findOneAndDelete({
         _id: groupId,
       });
       await User.findOneAndUpdate(
         { _id: context.user._id },
-        // { _id: "64559787008c6e8e7a8f6901" },
         { $pull: { groups: groupId } }
       );
 

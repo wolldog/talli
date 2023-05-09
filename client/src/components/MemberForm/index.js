@@ -77,7 +77,7 @@ const MemberForm = ({ groupId }) => {
         onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
-      >
+      ><h3>Add Members</h3>
         <Form.Item
           label="Email"
           name="email"
