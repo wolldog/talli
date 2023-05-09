@@ -1,8 +1,8 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
-import GroupDefault from "../../assets/images/groups.png"
+import GroupDefault from "../../assets/images/groups.png";
 
 import {
   EditOutlined,
@@ -29,24 +29,23 @@ import { ADD_GROUP } from "../../utils/mutations.js";
 const { Meta } = Card;
 
 const Groups = () => {
+  let isActivated = false;
 
-let isActivated = false
+  const { loading, data, refetch } = useQuery(QUERY_ME);
+  useEffect(() => {
+    refetch();
+  }, [isActivated]);
 
-const { loading, data, refetch } = useQuery(QUERY_ME);
-useEffect(() => { refetch() }, [isActivated])
+  const groups = data?.me.groups || [];
 
-const groups = data?.me.groups || [];
+  const [addGroup, { error }] = useMutation(ADD_GROUP);
 
-
-
-const [addGroup, { error }] = useMutation(ADD_GROUP);
-
-const handleAddGroup = async () => {
+  const handleAddGroup = async () => {
     try {
       const { data } = await addGroup({
         variables: { ...formState },
       });
-  
+
       setOpen(false);
       setFormState({ groupname: "" });
       isActivated = !isActivated;
@@ -80,7 +79,9 @@ const handleAddGroup = async () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   // const [modalText, setModalText] = useState("Content of the modal");
-
+  const style = {
+    cardsStyle: { padding: "20px 20px" },
+  };
   if (loading) {
     return <div>Loading...</div>;
   } else {
@@ -141,37 +142,33 @@ const handleAddGroup = async () => {
 
             <Divider />
             <Space wrap>
-              {groups &&
-                groups.map((group) => (
-                  <div className="groupCard" key={group._id}>
-                    <Link className="cardLink" to={`./${group._id}`}>
-                      <Card
-                        style={{
-                          width: 300,
-                        }}
-                        cover={
-                          <img
-                            alt="example"
-                            src={GroupDefault}
-
+              <div style={style.cardsStyle}>
+                {groups &&
+                  groups.map((group) => (
+                    <div className="groupCard" key={group._id}>
+                      <Link className="cardLink" to={`./${group._id}`}>
+                        <Card
+                          style={{
+                            width: 300,
+                          }}
+                          cover={<img alt="example" src={GroupDefault} />}
+                          actions={[
+                            <SettingOutlined key="setting" />,
+                            <EditOutlined key="edit" />,
+                            <EllipsisOutlined key="ellipsis" />,
+                          ]}
+                        >
+                          <Meta
+                            avatar={
+                              <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+                            }
+                            title={group.groupname}
                           />
-                        }
-                        actions={[
-                          <SettingOutlined key="setting" />,
-                          <EditOutlined key="edit" />,
-                          <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                      >
-                        <Meta
-                          avatar={
-                            <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-                          }
-                          title={group.groupname}
-                        />
-                      </Card>
-                    </Link>
-                  </div>
-                ))}
+                        </Card>
+                      </Link>
+                    </div>
+                  ))}
+              </div>
             </Space>
           </>
         ) : (

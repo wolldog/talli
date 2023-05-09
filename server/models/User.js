@@ -46,7 +46,7 @@ const userSchema = new Schema(
     paymentsmade: [
       {
         transactionId: {
-          type:String
+          type: String,
         },
       },
     ],
@@ -75,9 +75,10 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // when we query a user, we'll also get another field called `friendsCount` with the number of saved friends we have
-userSchema.virtual("friendsCount").get(function () {
-  return this.friends.length;
-});
+// not implement at the moment
+// userSchema.virtual("friendsCount").get(function () {
+//   return this.friends.length;
+// });
 
 const User = model("User", userSchema);
 
