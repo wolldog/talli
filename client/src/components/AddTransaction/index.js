@@ -26,7 +26,7 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-const AddTransactionForm = ({ groupId }) => {
+const AddTransactionForm = ({ groupId, gofetch }) => {
   const [formState, setFormState] = useState({
     transactionname: "",
     description: "",
@@ -54,6 +54,7 @@ const AddTransactionForm = ({ groupId }) => {
       const { data } = await addTransaction({
         variables: { ...formState, groupId },
       });
+      gofetch()
     } catch (e) {
       console.error(e);
     }

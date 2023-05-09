@@ -20,7 +20,7 @@ import { ADD_MEMBER } from "../../utils/mutations";
 
 import Auth from "../../utils/auth";
 
-const MemberForm = ({ groupId }) => {
+const MemberForm = ({ groupId, gofetch }) => {
   const [newMember, setNewMember] = useState("");
 
   const [addMember, { error }] = useMutation(ADD_MEMBER);
@@ -36,7 +36,7 @@ const MemberForm = ({ groupId }) => {
           email,
         },
       });
-
+      gofetch();
       setNewMember("");
     } catch (err) {
       console.error(err);

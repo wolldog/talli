@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Space, Typography, Row, Col, Card } from "antd";
 
 // Import the `useParams()` hook
@@ -35,13 +35,23 @@ const style = {
 };
 const SingleGroup = () => {
   const { groupId } = useParams();
+  let isActivated = false;
 
-  const { loading, data } = useQuery(QUERY_SINGLE_GROUP, {
+  const { loading, data, refetch } = useQuery(QUERY_SINGLE_GROUP, {
     // pass URL parameter
     variables: { groupId: groupId },
   });
 
+  useEffect(() => {
+    refetch();
+  }, [isActivated]);
+
   const group = data?.group || {};
+
+  const updateActivated = () => {
+    isActivated = !isActivated
+    refetch()
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,7 +69,7 @@ const SingleGroup = () => {
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 50 }}>
         <Col span={12}>
           <div className="transactionForm">
-            <AddTransactionForm groupId={groupId} />
+            <AddTransactionForm groupId={groupId} gofetch={updateActivated} />
           </div>
         </Col>
         <Col span={12}>
@@ -73,7 +83,7 @@ const SingleGroup = () => {
               <Typography>{group.totalgroupexpenses}</Typography>
             </div>
           </Card>
-          <MemberForm groupId={groupId} />
+          <MemberForm groupId={groupId} gofetch={updateActivated} />
           <div style={style.membersCard}>
             <MemberList members={group.members} />
           </div>
