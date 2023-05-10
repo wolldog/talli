@@ -1,14 +1,6 @@
 import React from "react";
 import {
   Avatar,
-  Card,
-  Space,
-  Divider,
-  Button,
-  Row,
-  Col,
-  Modal,
-  Input,
   Typography,
   List,
 } from "antd";

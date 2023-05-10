@@ -1,17 +1,14 @@
 import React from "react";
 import { Space, Typography, Button } from "antd";
-import { DashboardOutlined } from "@ant-design/icons"
+import { DashboardOutlined } from "@ant-design/icons";
 import headerImage from "./../../assets/images/headerImage.png";
 import { useNavigate, Link } from "react-router-dom";
 import Auth from "../../utils/auth.js";
 
 const PageHeader = () => {
-  const navigate = useNavigate();
- 
-
   const logout = (event) => {
     Auth.logout();
-    window.location.assign('/')
+    window.location.assign("/");
     // navigate("../../");
   };
   return (
@@ -23,7 +20,12 @@ const PageHeader = () => {
           <div>
             <Space>
               <Link to="/" replace={true}>
-                <Typography>{Auth.getProfile().data.nickname}'s Dashboard <DashboardOutlined style={{color: "black", fontSize: "20px"}}></DashboardOutlined></Typography>
+                <Typography>
+                  {Auth.getProfile().data.nickname}'s Dashboard{" "}
+                  <DashboardOutlined
+                    style={{ color: "black", fontSize: "20px" }}
+                  ></DashboardOutlined>
+                </Typography>
               </Link>
               <Button onClick={logout} style={{ margin: "10px" }}>
                 Logout

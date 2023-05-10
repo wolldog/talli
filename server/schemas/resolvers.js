@@ -167,7 +167,7 @@ const resolvers = {
         groupId,
         transactionname,
         description,
-        amountpaid,
+        amount,
         attachment,
         payer,
         date,
@@ -175,8 +175,9 @@ const resolvers = {
       context
     ) => {
       // new transaction is not implemented at front end yet. Bug when user is passing amountpaid
-      // const parsedAmount = parseFloat(amountpaid.toFixed(2));
+      const amountpaid = parseFloat(amount);
       const newTransaction = await Group.findOneAndUpdate(
+
         { _id: groupId },
         {
           $addToSet: {
@@ -188,8 +189,12 @@ const resolvers = {
               amountpaid,
               attachment,
             },
-            groupexpenses: amountpaid,
           },
+          $addToSet: {
+            groupexpenses: {
+              amountpaid,
+              },
+            }
         },
         { new: true, runValidators: true }
       );

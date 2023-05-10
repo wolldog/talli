@@ -5,22 +5,19 @@ import Auth from "../../utils/auth.js";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations.js";
 
-
 const Login = () => {
+const [formState, setFormState] = useState({ email: "", password: "" });
 
-  const [formState, setFormState] = useState({ email: "", password: "" });
+const [login, { error, data }] = useMutation(LOGIN_USER);
 
-  const [login, { error, data }] = useMutation(LOGIN_USER);
+const handleChange = (event) => {
+  const { name, value } = event.target;
 
-  
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
+  setFormState({
+    ...formState,
+    [name]: value,
+  });
+};
 
   // submit form
   const onFinish = async (event) => {

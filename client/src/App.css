@@ -10,7 +10,6 @@
   display: flex;
   align-items: center;
   padding: 4px 20px 4px 10px;
-  border-bottom: 1px solid rgb(221, 217, 217);
   justify-content: space-around;
 }
 

@@ -1,27 +1,9 @@
 import React from "react";
-import {
-  Avatar,
-  Card,
-  Space,
-  Divider,
-  Button,
-  Row,
-  Col,
-  Modal,
-  Input,
-  Typography,
-  List,
-} from "antd";
+import { Avatar, Typography, List } from "antd";
 
-
-const TransactionList = ({ transactions = []}) => {
+const TransactionList = ({ transactions = [] }) => {
   if (!transactions.length) {
-    return (
-      <Typography.Text>
-        No transactions yet!
-      </Typography.Text>
-    );
-
+    return <Typography.Text>No transactions yet!</Typography.Text>;
   }
 
   return (
@@ -32,9 +14,7 @@ const TransactionList = ({ transactions = []}) => {
         dataSource={transactions}
         bordered={true}
         renderItem={(item, index) => (
-          <List.Item
-            actions={[<a key="remove">Remove</a>]}
-          >
+          <List.Item actions={[<a key="remove">Remove</a>]}>
             <List.Item.Meta
               avatar={
                 <Avatar
