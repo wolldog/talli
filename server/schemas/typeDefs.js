@@ -17,7 +17,7 @@ const typeDefs = gql`
     members: [User]
     transactions: [Transaction]
     groupexpenses: [Float]
-    totalgroupexpenses: Float
+    totalAmountPaid: Float
     groupcredit: [Float]
   }
 
@@ -62,7 +62,7 @@ const typeDefs = gql`
       transactionname: String
       description: String
       payer: ID
-      amountpaid: String
+      amountpaid: Float
       date: String
       attachment: String
     ): Group

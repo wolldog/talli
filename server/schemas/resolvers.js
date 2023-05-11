@@ -88,7 +88,7 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-// not implemented at at front end yet.
+    // not implemented at at front end yet.
     addFriends: async (_, { friendId }, context) => {
       if (context.user) {
         const updatedFriends = await User.findOneAndUpdate(
@@ -167,17 +167,14 @@ const resolvers = {
         groupId,
         transactionname,
         description,
-        amount,
+        amountpaid,
         attachment,
         payer,
         date,
       },
       context
     ) => {
-      // new transaction is not implemented at front end yet. Bug when user is passing amountpaid
-      const amountpaid = parseFloat(amount);
       const newTransaction = await Group.findOneAndUpdate(
-
         { _id: groupId },
         {
           $addToSet: {
@@ -190,17 +187,12 @@ const resolvers = {
               attachment,
             },
           },
-          $addToSet: {
-            groupexpenses: {
-              amountpaid,
-              },
-            }
         },
         { new: true, runValidators: true }
       );
       return newTransaction;
     },
-// not implemented at at front end yet.
+    // not implemented at at front end yet.
     removeGroup: async (parent, { groupId }, context) => {
       const groupRemoved = await Group.findOneAndDelete({
         _id: groupId,
