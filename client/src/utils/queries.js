@@ -21,7 +21,7 @@ export const QUERY_SINGLE_GROUP = gql`
         }
         amountpaid
       }
-      totalgroupexpenses
+      totalAmountPaid
     }
   }
   

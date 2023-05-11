@@ -17,10 +17,13 @@ const normFile = (e) => {
 
 //AddTransactionForm function; props 'groupId' and 'gofetch' from Page/SingleGroup
 const AddTransactionForm = ({ groupId, gofetch }) => {
+
+  const [form] = Form.useForm();
+
   const [formState, setFormState] = useState({
     transactionname: "",
     description: "",
-    amountpaid: '',
+    amountpaid: 0,
     attachment: "",
   });
 
@@ -30,7 +33,7 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
     const { name, value } = event.target;
     setFormState({
       ...formState,
-      [name]: value,
+      [name]: name === "amountpaid" ? parseFloat(value) : value,
     });
   };
 
@@ -42,6 +45,8 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
         variables: { ...formState, groupId },
       });
       gofetch();
+      form.resetFields();
+
     } catch (e) {
       console.error(e);
     }
@@ -49,6 +54,7 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
 
   return (
     <Form
+      form={form}
       labelCol={{
         span: 20,
       }}
@@ -104,7 +110,6 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
         <Input
           style={{ width: "100%" }}
           className="form-input"
-          type="number"
           placeholder="$0.00"
           name="amountpaid"
           value={formState.amountpaid}
