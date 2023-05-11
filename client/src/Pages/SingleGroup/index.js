@@ -78,7 +78,7 @@ const SingleGroup = () => {
             }}
           >
             <div style={style.totalExpenses}>
-              <Typography>{group.totalgroupexpenses}</Typography>
+              <Typography>{group.totalAmountPaid}</Typography>
             </div>
           </Card>
           <MemberForm groupId={groupId} gofetch={updateActivated} />

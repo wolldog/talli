@@ -47,17 +47,6 @@ const groupSchema = new Schema(
         },
       },
     ],
-    // membersPayments
-    groupexpenses: [
-      {
-        type: Number,
-      },
-    ],
-    groupcredit: [
-      {
-        type: Number,
-      },
-    ],
   },
   // set this to use virtual below
   {
@@ -67,15 +56,14 @@ const groupSchema = new Schema(
   }
 );
 
-// when we query a group, we'll also get another field called `totalgroupexpenses` with the total expense of the group
-groupSchema.virtual("totalgroupexpenses").get(function () {
-  let expenses = this.groupexpenses;
-  let expensesSum = 0;
-  for (let i = 0; i < expenses.length; i++) {
-    expensesSum += expenses[i];
-  }
-  console.log(expensesSum);
-  return expensesSum;
+//Virtual to sum all group expenses
+
+groupSchema.virtual("totalAmountPaid").get(function () {
+  let total = 0;
+  this.transactions.forEach((transaction) => {
+    total += transaction.amountpaid;
+  });
+  return total.toFixed(2);
 });
 
 const Group = model("Group", groupSchema);
