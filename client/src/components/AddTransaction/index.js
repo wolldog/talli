@@ -17,6 +17,9 @@ const normFile = (e) => {
 
 //AddTransactionForm function; props 'groupId' and 'gofetch' from Page/SingleGroup
 const AddTransactionForm = ({ groupId, gofetch }) => {
+
+  const [form] = Form.useForm();
+
   const [formState, setFormState] = useState({
     transactionname: "",
     description: "",
@@ -42,6 +45,8 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
         variables: { ...formState, groupId },
       });
       gofetch();
+      form.resetFields();
+
     } catch (e) {
       console.error(e);
     }
@@ -49,6 +54,7 @@ const AddTransactionForm = ({ groupId, gofetch }) => {
 
   return (
     <Form
+      form={form}
       labelCol={{
         span: 20,
       }}
