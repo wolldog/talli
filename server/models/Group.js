@@ -12,8 +12,8 @@ const groupSchema = new Schema(
     groupname: {
       type: String,
       require: true,
-      unique: true,
     },
+    
     members: [
       {
         type: Schema.Types.ObjectId,
