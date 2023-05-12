@@ -1,40 +1,30 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
 
-import { Button, Input, Form } from "antd";
+import { Button, Input, Form, message } from "antd";
 
 import { ADD_MEMBER } from "../../utils/mutations";
 
 const MemberForm = ({ groupId, gofetch }) => {
-  // const [newMember, setNewMember] = useState("");
-
   const [addMember, { error }] = useMutation(ADD_MEMBER);
 
   const onFinish = async ({ email }) => {
-    console.log(email);
-    // console.log(newMember, groupId);
-
     try {
-      const { data } = await addMember({
+      const { data, error } = await addMember({
         variables: {
           groupId,
           email,
         },
       });
       gofetch();
-      // setNewMember("");
+      message.success(`New group member has been added`);
     } catch (err) {
       console.error(err);
+      message.error(
+        "We can't find a Talli member with that email. Why not invite your friend to join?"
+      );
     }
   };
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-  };
-  // if (name === "newMember") {
-  //   setNewMember(value);
-  // }
-  // };
 
   return (
     <div>
@@ -51,9 +41,7 @@ const MemberForm = ({ groupId, gofetch }) => {
           margin: "auto",
         }}
         layout="vertical"
-        onChange={handleChange}
         onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <h3>Add Members</h3>
@@ -72,7 +60,7 @@ const MemberForm = ({ groupId, gofetch }) => {
 
         <Form.Item
           wrapperCol={{
-            offset: 8,
+            offset: 0,
             span: 16,
           }}
         >
