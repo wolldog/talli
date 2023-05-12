@@ -1,6 +1,5 @@
 import { useState } from "react";
-import {} from "antd";
-import { Button, Form, Input, Typography, message } from "antd";
+import { Button, Form, Input, Typography, Space, message } from "antd";
 import Auth from "../../utils/auth.js";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations.js";
@@ -89,9 +88,12 @@ const Login = () => {
             span: 16,
           }}
         >
+          <Space>
           <Button type="default" htmlType="submit">
             Login
           </Button>
+          <Button type="default" href="/">Cancel</Button>
+          </Space>
         </Form.Item>
       </Form>
     </div>

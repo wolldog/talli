@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Typography } from "antd";
+import { Space, Typography } from "antd";
 import { ADD_USER } from "../../utils/mutations.js";
 import { useMutation } from "@apollo/client";
 import Agreement from "../../assets/docs/ServiceAgreement(draft).pdf"
@@ -23,7 +23,7 @@ const Join = () => {
     email: '',
     password: '',
   });
-  const [addUser, { error, data }] = useMutation(ADD_USER);
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,8 +35,6 @@ const Join = () => {
   };
 
   const onFinish = async (event) => {
-    // event.preventDefault();
-    console.log(formState);
 
     try {
       const { data } = await addUser({
@@ -50,10 +48,7 @@ const Join = () => {
   };
   
   const [form] = Form.useForm();
-  // const onFinish = (values) => {
-  //   console.log("Received values of form: ", values);
-  // };
-  
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -240,9 +235,12 @@ const Join = () => {
           </Checkbox>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
+          <Space>
           <Button type="primary" htmlType="submit">
             Join
           </Button>
+          <Button type="default" href="/">Cancel</Button>
+          </Space>
         </Form.Item>
       </Form>
     </div>

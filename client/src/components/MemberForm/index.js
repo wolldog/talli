@@ -10,7 +10,7 @@ const MemberForm = ({ groupId, gofetch }) => {
 
   const onFinish = async ({ email }) => {
     try {
-      const { data, error } = await addMember({
+      const { error } = await addMember({
         variables: {
           groupId,
           email,
@@ -19,7 +19,6 @@ const MemberForm = ({ groupId, gofetch }) => {
       gofetch();
       message.success(`New group member has been added`);
     } catch (err) {
-      console.error(err);
       message.error(
         "We can't find a Talli member with that email. Why not invite your friend to join?"
       );
