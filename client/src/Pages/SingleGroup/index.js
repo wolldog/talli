@@ -20,16 +20,22 @@ const style = {
   },
   groupTitle: {
     padding: "10px 100px 0 0",
+    
   },
   totalExpenses: {
     padding: "10px 10px",
   },
   membersCard: {
     padding: "10px 10px",
+    margin: ""
   },
   expensesCard: {
     padding: "12px 10px",
   },
+  membersForm: {
+    padding: "10px 10px",
+    
+  }
 };
 const SingleGroup = () => {
   const { groupId } = useParams();
@@ -74,14 +80,17 @@ const SingleGroup = () => {
           <Card
             title="Groups Total Expenses"
             style={{
-              width: 300,
+              width: 375,
+              margin: "60px 0px 10px 10px"
             }}
           >
-            <div style={style.totalExpenses}>
-              <Typography>{group.totalAmountPaid}</Typography>
+            <div >
+              <Typography.Title>${group.totalAmountPaid}</Typography.Title>
             </div>
           </Card>
+          <div style={style.membersForm}>
           <MemberForm groupId={groupId} gofetch={updateActivated} />
+          </div>
           <div style={style.membersCard}>
             <MemberList members={group.members} />
           </div>

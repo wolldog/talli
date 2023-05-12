@@ -45,7 +45,7 @@ const Login = () => {
 
   return (
     <div>
-      <Typography.Title>Login</Typography.Title>
+      <Typography.Title style={{textAlign: "center", padding: "20px"}}>Login</Typography.Title>
       <Form
         form={form}
         name="basic"

@@ -1,7 +1,7 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
 
-import { Button, Input, Form, message } from "antd";
+import { Button, Input, Form, message, Divider} from "antd";
 
 import { ADD_MEMBER } from "../../utils/mutations";
 
@@ -26,7 +26,7 @@ const MemberForm = ({ groupId, gofetch }) => {
   };
 
   return (
-    <div>
+    <div style={{border: "0.2px solid lightgray", borderRadius: "5px"}}>
       <Form
         name="basic"
         labelCol={{
@@ -43,7 +43,10 @@ const MemberForm = ({ groupId, gofetch }) => {
         onFinish={onFinish}
         autoComplete="off"
       >
+        <div style={{padding: "15px"}}>
         <h3>Add Members</h3>
+        <Divider></Divider>
+
         <Form.Item
           label="Email"
           name="email"
@@ -67,6 +70,7 @@ const MemberForm = ({ groupId, gofetch }) => {
             Submit
           </Button>
         </Form.Item>
+        </div>
       </Form>
     </div>
   );

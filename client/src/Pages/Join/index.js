@@ -102,7 +102,7 @@ const Join = () => {
 
   return (
     <div className="join">
-      <Typography.Title> Join Talli </Typography.Title>
+      <Typography.Title style={{textAlign: "center"}}> Join Talli </Typography.Title>
       <Form
         {...formItemLayout}
         form={form}
