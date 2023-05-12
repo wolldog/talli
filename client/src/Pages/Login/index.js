@@ -1,28 +1,27 @@
 import { useState } from "react";
-import { Typography } from "antd";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Typography, Space, message } from "antd";
 import Auth from "../../utils/auth.js";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations.js";
 
 const Login = () => {
-const [formState, setFormState] = useState({ email: "", password: "" });
+  const [form] = Form.useForm();
 
-const [login, { error, data }] = useMutation(LOGIN_USER);
+  const [formState, setFormState] = useState({ email: "", password: "" });
 
-const handleChange = (event) => {
-  const { name, value } = event.target;
+  const [login, { error }] = useMutation(LOGIN_USER);
 
-  setFormState({
-    ...formState,
-    [name]: value,
-  });
-};
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
 
   // submit form
   const onFinish = async (event) => {
-    // event.preventDefault();
-    console.log(formState);
     try {
       const { data } = await login({
         variables: { ...formState },
@@ -31,6 +30,10 @@ const handleChange = (event) => {
       Auth.login(data.loginUser.token);
     } catch (e) {
       console.error(e);
+      message.error(
+        "Login failed: we do not recognise that email, password combination"
+      );
+      form.resetFields();
     }
 
     // clear form values
@@ -44,7 +47,9 @@ const handleChange = (event) => {
     <div>
       <Typography.Title>Login</Typography.Title>
       <Form
+        form={form}
         name="basic"
+        onFinish={onFinish}
         labelCol={{
           span: 8,
         }}
@@ -54,22 +59,10 @@ const handleChange = (event) => {
         style={{
           maxWidth: 600,
         }}
-        onFinish={onFinish}
-        // onFinishFailed={onFinishFailed}
-        autoComplete="off"
       >
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email!",
-            },
-          ]}
-        >
+        <Form.Item label="Email" name="email">
           <Input
-            className="form-input"
+            required
             placeholder="Your email"
             name="email"
             type="email"
@@ -78,19 +71,10 @@ const handleChange = (event) => {
           />
         </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
+        <Form.Item label="Password" name="password">
           <Input.Password
-            className="form-input"
-            placeholder="******"
+            required
+            placeholder="Your password"
             name="password"
             type="password"
             value={formState.password}
@@ -104,9 +88,12 @@ const handleChange = (event) => {
             span: 16,
           }}
         >
+          <Space>
           <Button type="default" htmlType="submit">
             Login
           </Button>
+          <Button type="default" href="/">Cancel</Button>
+          </Space>
         </Form.Item>
       </Form>
     </div>
