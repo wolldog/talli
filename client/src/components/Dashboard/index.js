@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
-import GroupImage from "../../assets/images/groups.png";
-import FriendsImage from "../../assets/images/friends1.png";
-import TransImage from "../../assets/images/transactions.png";
+import GroupImage from "../../assets/images/groups2.png";
+import FriendsImage from "../../assets/images/friends2.png";
+import TransImage from "../../assets/images/transactions2.png";
 
 import { Card, Space } from "antd";
 
@@ -16,9 +16,8 @@ const { Meta } = Card;
 
   return (
     <div>
-      {/* <Typography.Title>My Dashboard</Typography.Title>
-          <Button href="./groups">Groups</Button> */}
-      <Space>
+      <Space wrap align="center" >
+
         <Link to={"/groups"}>
           <Card
             hoverable

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import Auth from "../../utils/auth.js";
-import GroupDefault from "../../assets/images/groups.png";
+import GroupDefault from "../../assets/images/groups2.png";
 
 import {
   EditOutlined,
@@ -99,7 +99,7 @@ const Groups = () => {
 
             <Row justify="center">
               <Col span={4}>
-                <Button type="primary" onClick={showModal}>
+                <Button onClick={showModal} type="primary" >
                   Add a group
                 </Button>
                 {error ? (

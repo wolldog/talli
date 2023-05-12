@@ -1,8 +1,8 @@
 import React from "react";
 import { Space, Typography, Button } from "antd";
 import { DashboardOutlined } from "@ant-design/icons";
-import headerImage from "./../../assets/images/headerImage.png";
-import { useNavigate, Link } from "react-router-dom";
+import headerImage from "./../../assets/images/talliLogo.png";
+import { Link } from "react-router-dom";
 import Auth from "../../utils/auth.js";
 
 const PageHeader = () => {
@@ -21,9 +21,9 @@ const PageHeader = () => {
             <Space>
               <Link to="/" replace={true}>
                 <Typography>
-                  {Auth.getProfile().data.nickname}'s Dashboard{" "}
+                  {/* {Auth.getProfile().data.nickname}'s Dashboard{" "} */}
                   <DashboardOutlined
-                    style={{ color: "black", fontSize: "20px" }}
+                    style={{ color: "black", fontSize: "30px" }}
                   ></DashboardOutlined>
                 </Typography>
               </Link>
