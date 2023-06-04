@@ -8,7 +8,7 @@ Use the information to settle the expenses with your group friends.
 
 ## Link to deploy application
 
- Go to Talli clicking here -> [Tally deployed link](https://damp-falls-76467.herokuapp.com/)
+ Go to Talli clicking here -> [Talli deployed link](https://damp-falls-76467.herokuapp.com/)
 
 ## Technologies:
 
