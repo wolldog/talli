@@ -1,14 +1,23 @@
-# Talli
 
-Talli is a MERN stack single-page application created to:
+![talliLogo50%](https://github.com/wolldog/talli/assets/110208272/35b795b1-2fc3-4cd2-87c5-3958a5ca69b3)
 
-Manage, keep record and split expenses with your friends.
-Add bills and keep track of the payers.
-Use the information to settle the expenses with your group friends.
+## Description
 
-## Link to deploy application
+Talli is a MERN stack single-page application created to record expenses incurred on behalf of a group and to facilitate splitting the amount of the expense between all group members. This can be a single expense, for example a meal, or multiple expenses for example a holiday. The application records who made the payment and what the payment was for.
 
- Go to Talli clicking here -> [Talli deployed link](https://damp-falls-76467.herokuapp.com/)
+### [Talli deployed link](https://damp-falls-76467.herokuapp.com/)
+ 
+## Table of Contents
+
+- Technologies
+
+- Installation
+
+- Usage
+
+- Future Development
+
+- Contact 
 
 ## Technologies:
 
