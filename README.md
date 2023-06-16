@@ -9,17 +9,19 @@ Talli is a MERN stack single-page application created to record expenses incurre
  
 ## Table of Contents
 
-- Technologies
+- [Technologies](#technologies)
 
-- Installation
+- [Installation](#installation)
 
-- Usage
+- [Usage](#usage)
 
-- Future Development
+- [Future Development](#development)
 
-- Contact 
+- [Collaboration](#collaboration)
 
-## Technologies:
+- [Questions](#questions)
+
+## <a name="technologies"></a>Technologies:
 
 - JavaScript
 - Graphql
@@ -33,7 +35,11 @@ Talli is a MERN stack single-page application created to record expenses incurre
 - Dotenv
 - Heroku
 
-## collaboration
+## <a name="usage"></a>Usage
+## <a name="installation"></a>Installation
+## <a name="development"></a>Future Development
+## <a name="collaboration"></a>Collaboration
+## <a name="questions"></a>Questions
 List of collaborators & links to GitHub profiles:
 
 
