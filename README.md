@@ -68,4 +68,4 @@ We have many aspirations for future development of the application.
   Pia Fierro - piafierro.3187@gmail.com
   
   Alternatively you can reach us through GitHub (see links above under 'Contributors')
-![talli-dashboard](https://github.com/wolldog/talli/assets/110208272/1fa6d7b6-7176-4e34-9eea-fac5d99d2b19)
+
